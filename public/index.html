@@ -322,6 +322,72 @@ mark{background:rgba(255,116,3,.3);color:#fff;border-radius:4px;padding:0 3px}
 .empty img{width:64px}
 .empty h2{margin:0;font:800 20px/1.2 var(--f-d);color:#fff}
 
+/* ---------- polish layer ---------- */
+img.fx{opacity:0;transition:opacity .5s var(--ease)} img.fx.ld{opacity:1}
+.top.hide{transform:translateY(calc(-100% - 1px))}
+.nav-ind{position:absolute;z-index:0;left:0;top:0;border-radius:15px;background:color-mix(in srgb,var(--ic,var(--orange)) 22%,transparent);box-shadow:0 0 22px -6px var(--ic,var(--orange));transition:transform .5s var(--spring),width .4s var(--ease),background .35s,box-shadow .35s;pointer-events:none}
+.nav button{z-index:1}
+.nav button[aria-current="page"] .ic{background:transparent}
+/* staggered entrances (transform only, never left hidden) */
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.985)}}
+.page:not(.still) .spot-card,.page:not(.still) .tile,.page:not(.still) .read-all,.page:not(.still) .lead,.page:not(.still) .row,.page:not(.still) .pager2{animation:rise .55s var(--ease) backwards;animation-delay:calc(var(--i,0) * 45ms)}
+/* journey: per-sector progress on tiles, ring on the read button */
+.tile .tp{position:absolute;left:12px;right:12px;bottom:6px;height:3px;border-radius:2px;background:rgba(255,255,255,.07);overflow:hidden}
+.tile .tp i{display:block;height:100%;border-radius:2px;background:var(--cc);transform-origin:left;animation:grow 1s var(--ease) .25s backwards}
+@keyframes grow{from{transform:scaleX(0)}}
+.tile .ok{position:absolute;right:11px;bottom:12px;display:flex;align-items:center;gap:4px;font:700 10.5px/1 var(--f-d);color:var(--cc)}
+.tile .ok svg{width:13px;height:13px}
+.read-all .ring{position:relative;width:28px;height:28px;flex:none;display:grid;place-items:center}
+.read-all .ring svg.r{position:absolute;inset:0;width:28px;height:28px;transform:rotate(-90deg)}
+.read-all .ring circle{fill:none;stroke-width:3;stroke-linecap:round}
+.read-all .ring .bg{stroke:rgba(5,9,23,.22)} .read-all .ring .fg{stroke:var(--ink);transition:stroke-dashoffset 1s var(--ease)}
+.read-all .ring svg.pl{width:12px;height:12px}
+.read-all small{font:700 12px/1 var(--f-d);opacity:.7;margin-left:2px}
+/* row highlight after returning from a story */
+@keyframes flash{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--cc,var(--orange)) 70%,transparent);background:var(--s3)}100%{box-shadow:0 0 0 14px transparent}}
+.flash{animation:flash 1.1s var(--ease)}
+/* bottom pagers: previous beside next (story and category) */
+.pager2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pager2.one{grid-template-columns:1fr}
+.pg{position:relative;display:flex;flex-direction:column;gap:7px;min-height:92px;padding:12px 13px;border-radius:16px;background:var(--s1);border:1px solid var(--line);text-align:left;overflow:hidden;transition:transform .15s var(--ease),border-color .2s}
+.pg:active{transform:scale(.97)}
+.pg small{display:flex;align-items:center;gap:5px;font:800 10px/1 var(--f-d);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.pg small svg{width:14px;height:14px;flex:none}
+.pg b{font:700 13.5px/1.3 var(--f-d);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pg.nx{text-align:right;background:linear-gradient(135deg,transparent 40%,color-mix(in srgb,var(--nc,var(--orange)) 14%,transparent)),var(--s1);border-color:color-mix(in srgb,var(--nc,var(--orange)) 35%,var(--line))}
+.pg.nx small{justify-content:flex-end;color:var(--nc,var(--orange))}
+.pg .ico{position:absolute;right:-10px;bottom:-14px;width:64px;height:64px;color:var(--nc);opacity:.12}
+.pg.pv .ico{left:-10px;right:auto}
+.pg .ico svg{width:100%;height:100%}
+/* story: tappable progress, compact title on scroll, parallax hero */
+.prog{gap:3px;margin:-5px 0}
+.prog button{flex:1;height:13px;display:flex;align-items:center}
+.prog button i{display:block;width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.2);transition:background .3s}
+.prog button.d i{background:rgba(255,255,255,.75)} .prog button.c i{background:var(--cc)}
+.st-lbl{position:relative;flex:1;min-width:0;height:40px}
+.st-lbl>*{position:absolute;inset:0;display:flex;align-items:center;transition:opacity .25s,transform .3s var(--ease)}
+.st-lbl .mini{opacity:0;transform:translateY(6px);font:700 13.5px/1.2 var(--f-d);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;line-height:40px}
+.st-page.scrolled .st-lbl .pos{opacity:0;transform:translateY(-6px)}
+.st-page.scrolled .st-lbl .mini{opacity:1;transform:none}
+.st-page.scrolled .st-top{background:rgba(5,9,23,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.st-top{transition:background .3s}
+.st-hero{will-change:transform}
+/* section hand-off: the journey across sectors */
+.journey{display:flex;align-items:center;gap:6px;margin-top:2px}
+.journey span{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--s1);border:1px solid var(--line);color:var(--muted)}
+.journey span svg{width:15px;height:15px}
+.journey span.dn{color:var(--cc2);border-color:color-mix(in srgb,var(--cc2) 45%,transparent);background:color-mix(in srgb,var(--cc2) 12%,transparent)}
+.journey span.cur{color:var(--ink);background:var(--cc2);border-color:var(--cc2);transform:scale(1.12);box-shadow:0 0 20px -4px var(--cc2)}
+.journey i{width:12px;height:2px;border-radius:1px;background:var(--line-2)}
+.burst{position:relative;display:grid;place-items:center;width:120px;height:120px}
+.burst img{width:76px;position:relative;animation:pop .7s var(--spring) both}
+.burst i{position:absolute;inset:18px;border-radius:50%;border:2px solid var(--orange);opacity:0;animation:ring 1.6s var(--ease) .2s infinite}
+.burst i:nth-child(2){border-color:var(--sky);animation-delay:.7s}
+@keyframes ring{0%{transform:scale(.7);opacity:.7}100%{transform:scale(1.7);opacity:0}}
+/* first-load skeleton */
+.sk{border-radius:18px;background:linear-gradient(100deg,var(--s1) 30%,var(--s2) 50%,var(--s1) 70%);background-size:300% 100%;animation:shim 1.4s linear infinite}
+@keyframes shim{from{background-position:100% 0}to{background-position:-50% 0}}
+
 /* desktop: nav becomes a left rail; stories open as a side panel */
 @media (min-width:900px){
   .nav{top:0;bottom:0;right:auto;width:210px;flex-direction:column;justify-content:flex-start;gap:4px;padding:calc(84px + var(--top)) 12px 20px;border-top:0;border-right:1px solid var(--line)}
@@ -423,8 +489,10 @@ const store = {get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){re
 const buzz = (ms = 8) => { try { navigator.vibrate && navigator.vibrate(ms); } catch(e){} };
 const PROXY = !/^(localhost|127\.|$)/.test(location.hostname);
 const imgUrl = (src, w) => !src ? "" : (PROXY ? `/_vercel/image?url=${encodeURIComponent(src)}&w=${w}&q=70` : src);
-const img = (src, w, alt = "", extra = "") => src ? `<img src="${esc(imgUrl(src, w))}" data-orig="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async" draggable="false" ${extra}>` : "";
-document.addEventListener("error", e => { const t = e.target; if (t.tagName === "IMG" && t.dataset.orig && t.src !== t.dataset.orig) t.src = t.dataset.orig; }, true);
+const img = (src, w, alt = "", extra = "") => src ? `<img class="fx" src="${esc(imgUrl(src, w))}" data-orig="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async" draggable="false" ${extra}>` : "";
+document.addEventListener("error", e => { const t = e.target; if (t.tagName !== "IMG") return; if (t.dataset.orig && t.src !== t.dataset.orig) t.src = t.dataset.orig; else t.classList.add("ld"); }, true);
+document.addEventListener("load", e => { if (e.target.tagName === "IMG") e.target.classList.add("ld"); }, true);
+const settleImgs = root => root.querySelectorAll("img.fx").forEach(i => { if (i.complete && i.naturalWidth) i.classList.add("ld"); });
 const visual = s => (s.clips && s.clips[0] && {src:s.clips[0].src, paper:true}) || (s.image && {src:s.image.src, paper:false}) || null;
 
 const st = {index:[], ed:null, date:null, view:"brief", cat:null, preview:false, story:null};
@@ -462,10 +530,21 @@ function renderChrome(){
   const all = secs(), max = 4, shown = all.length > max ? all.slice(0, max - 1) : all;
   const b = (id, label, icon, color, badge, cur) => `<button data-nav="${esc(id)}" style="${color ? `--cc:${color}` : ""}" aria-current="${cur ? "page" : "false"}"><span class="ic">${icon}${badge ? `<span class="badge num">${badge}</span>` : ""}</span><span class="l">${esc(label)}</span></button>`;
   const moreCur = st.view === "cat" && !shown.includes(st.cat);
-  $("#nav").innerHTML = b("brief", "Brief", ICON.brief, "", 0, st.view !== "cat") +
+  const nav = $("#nav"), ind = nav.querySelector(".nav-ind") || Object.assign(document.createElement("span"), {className:"nav-ind"});
+  nav.innerHTML = b("brief", "Brief", ICON.brief, "", 0, st.view !== "cat") +
     shown.map(n => { const c = catInfo(n); return b("c:" + n, c.short, c.icon, c.color, storiesIn(n).filter(isNew).length, st.view === "cat" && st.cat === n); }).join("") +
     (all.length > max ? b("more", "More", ICON.more, "", 0, moreCur) : "");
+  nav.prepend(ind); placeInd();
 }
+function placeInd(){
+  const nav = $("#nav"), ind = nav.querySelector(".nav-ind"), cur = nav.querySelector('[aria-current="page"] .ic'); if (!ind || !cur) return;
+  const n = nav.getBoundingClientRect(), r = cur.getBoundingClientRect(), first = !ind.dataset.ok;
+  if (first) ind.style.transition = "none";
+  Object.assign(ind.style, {width:r.width + "px", height:r.height + "px", transform:`translate(${r.left - n.left}px,${r.top - n.top}px)`});
+  ind.style.setProperty("--ic", cur.closest("button").style.getPropertyValue("--cc") || "var(--orange)");
+  if (first){ ind.dataset.ok = 1; requestAnimationFrame(() => ind.style.transition = ""); }
+}
+addEventListener("resize", placeInd);
 
 /* ---------- brief ---------- */
 function renderBrief(){
@@ -477,17 +556,19 @@ function renderBrief(){
   const vs = ed.versions || [], last = vs.at(-1), first = vs[0];
   const upd = ed.version > 1 && last && last.added > 0 ? `<div class="upd"><i></i><span><b>Updated ${timeIST(last.at)}</b> · ${last.added} new ${last.added === 1 ? "story" : "stories"} since ${timeIST(first.at)}</span></div>` : "";
   const unread = ed.stories.filter(s => !isRead(s)).length;
+  let ti = 2;
   const tile = (n, wide) => {
-    const c = catInfo(n), l = storiesIn(n), lead = leadOf(n), nn = l.filter(isNew).length;
+    const c = catInfo(n), l = storiesIn(n), lead = leadOf(n), nn = l.filter(isNew).length, rd = l.filter(isRead).length;
     const thumbs = l.map(visual).filter(Boolean).slice(0, 3);
-    return `<button class="tile ${wide ? "wide" : ""}" data-nav="c:${esc(n)}" style="--cc:${c.color}">
+    return `<button class="tile ${wide ? "wide" : ""}" data-nav="c:${esc(n)}" style="--cc:${c.color};--i:${ti++}">
       <span class="hd">${c.icon}${esc(c.long)}<span class="n num">${l.length}</span></span>
       <p>${esc(lead.title)}</p>
       <span class="stack">${thumbs.map(v => `<span>${img(v.src, 96, "", 'loading="eager"')}</span>`).join("")}</span>
-      ${nn ? `<span class="nw">${nn} NEW</span>` : ""}</button>`;
+      ${nn ? `<span class="nw">${nn} NEW</span>` : rd === l.length ? `<span class="ok">${ICON.check}Read</span>` : ""}
+      ${rd ? `<span class="tp"><i style="width:${Math.round(rd / l.length * 100)}%"></i></span>` : ""}</button>`;
   };
   const tiles = others.map((n, i) => tile(n, others.length % 2 && i === others.length - 1 && !clips.length));
-  if (clips.length) tiles.push(`<button class="tile ${tiles.length % 2 ? "" : "wide"}" data-view="clips" style="--cc:#ebe5d8">
+  if (clips.length) tiles.push(`<button class="tile ${tiles.length % 2 ? "" : "wide"}" data-view="clips" style="--cc:#ebe5d8;--i:${ti++}">
       <span class="hd">${ICON.clip}Clippings<span class="n num">${clips.length}</span></span>
       <p>Today's newspaper cut-outs</p>
       <span class="stack">${clips.slice(0, 3).map(s => `<span>${img(s.clips[0].src, 96, "", 'loading="eager"')}</span>`).join("")}</span></button>`);
@@ -497,7 +578,7 @@ function renderBrief(){
     <div class="brief-grid">
       <section aria-label="Gulf in the news">
         ${gulf.length ? `<div class="spot-row" id="spot-row">${gulf.map((s, i) => { const v = visual(s); return `
-          <button class="spot-card" data-open="${esc(GULF)}" data-i="${i}">${v ? img(v.src, 640, "", i ? "" : 'loading="eager" fetchpriority="high"') : ""}
+          <button class="spot-card" data-open="${esc(GULF)}" data-i="${i}" data-skey="${esc(s.key || s.id)}" style="--i:${i}">${v ? img(v.src, 640, "", i ? "" : 'loading="eager" fetchpriority="high"') : ""}
             ${isNew(s) ? `<span class="nw">NEW</span>` : ""}
             <span class="tx"><span class="flag">Gulf in the news${gulf.length > 1 ? ` · ${i + 1}/${gulf.length}` : ""}</span><h3>${esc(s.title)}</h3><span class="meta">${esc(s.outlet)}${s.platform ? " · " + esc(s.platform) : ""}</span></span></button>`; }).join("")}</div>
           ${gulf.length > 1 ? `<div class="dots" id="dots">${gulf.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>` : ""}`
@@ -506,7 +587,7 @@ function renderBrief(){
       <section aria-label="Your sectors today">
         <div class="eyebrow">Your sectors today<span>${ed.stories.length} stories</span></div>
         <div class="tiles">${tiles.join("")}</div>
-        <button class="read-all" data-act="read-all">${ICON.play}<span>${unread === ed.stories.length ? "Read today's brief" : unread ? `Continue · ${unread} unread` : "Read it again"}</span></button>
+        <button class="read-all" data-act="read-all" style="--i:${ti}"><span class="ring"><svg class="r" viewBox="0 0 28 28"><circle class="bg" cx="14" cy="14" r="12"/><circle class="fg" cx="14" cy="14" r="12" stroke-dasharray="75.4" stroke-dashoffset="${(75.4 * unread / ed.stories.length).toFixed(1)}"/></svg>${ICON.play.replace("<svg", '<svg class="pl"')}</span><span>${unread === ed.stories.length ? "Read today's brief" : unread ? "Continue reading" : "Read it again"}</span>${unread && unread < ed.stories.length ? `<small class="num">${ed.stories.length - unread}/${ed.stories.length}</small>` : ""}</button>
       </section>
     </div>`, "f");
   const row = $("#spot-row"), dots = $("#dots");
@@ -519,21 +600,24 @@ function renderBrief(){
 /* ---------- category ---------- */
 function renderCat(dir){
   const n = st.cat, c = catInfo(n), list = ordered(n), lead = list[0], rest = list.slice(1);
-  const i = secs().indexOf(n), nextSec = secs()[i + 1];
+  const i = secs().indexOf(n), nextSec = secs()[i + 1], prevSec = secs()[i - 1];
   const lv = visual(lead);
   const kick = s => `<span class="kick">${esc(s.outlet)}${s.edition ? ` <em>· ${esc(s.edition.split(",")[0])}</em>` : ""}${s.page ? ` <em>· ${pages(s.page)}</em>` : ""}${!s.page && s.kind !== "print" ? ` <em>· ${KIND[s.kind]}${s.platform ? " · " + esc(s.platform) : ""}</em>` : ""}</span>`;
   setPage(`<div style="--cc:${c.color}">
     <div class="cat-h"><span class="ic">${c.icon}</span><h1>${esc(c.long)}</h1><span class="num">${list.length} ${list.length === 1 ? "story" : "stories"}</span></div>
-    <button class="lead ${lv?.paper ? "paper" : ""} ${isRead(lead) ? "read" : ""}" data-open="${esc(n)}" data-i="0">${lv ? img(lv.src, 1080, "", 'loading="eager"') : ""}
+    <button class="lead ${lv?.paper ? "paper" : ""} ${isRead(lead) ? "read" : ""}" data-open="${esc(n)}" data-i="0" data-skey="${esc(lead.key || lead.id)}">${lv ? img(lv.src, 1080, "", 'loading="eager"') : ""}
       ${isNew(lead) ? `<span class="nw">NEW</span>` : ""}
       <span class="tx">${kick(lead)}<h2>${esc(lead.title)}</h2></span></button>
     <div class="rows">${rest.map((s, k) => { const v = visual(s), r = isRead(s); return `
-      <button class="row ${r ? "read" : ""}" data-open="${esc(n)}" data-i="${k + 1}">
+      <button class="row ${r ? "read" : ""}" data-open="${esc(n)}" data-i="${k + 1}" data-skey="${esc(s.key || s.id)}" style="--i:${Math.min(k + 1, 9)}">
         <span class="th ${v ? (v.paper ? "" : "photo") : "none"}">${v ? img(v.src, 256) : ICON.other}</span>
         <span class="tx">${kick(s)}<h3>${esc(s.title)}</h3></span>
         ${isNew(s) ? `<span class="dot" title="New"></span>` : r ? `<span class="check">${ICON.check}</span>` : ""}</button>`; }).join("")}</div>
-    ${nextSec ? `<button class="next-cat" data-nav="c:${esc(nextSec)}" style="--cc:${catInfo(nextSec).color}"><span class="ic">${catInfo(nextSec).icon}</span><span><small>Next sector</small><b>${esc(catInfo(nextSec).long)} · ${storiesIn(nextSec).length}</b></span>${ICON.next}</button>`
-      : `<button class="next-cat" data-nav="brief"><span class="ic" style="--cc:var(--orange)">${ICON.brief}</span><span><small>That's every sector</small><b>Back to the brief</b></span>${ICON.next}</button>`}
+    <div class="pager2 ${prevSec ? "" : "one"}" style="margin-top:14px;--i:10">
+      ${prevSec ? `<button class="pg pv" data-nav="c:${esc(prevSec)}" style="--nc:${catInfo(prevSec).color}"><span class="ico">${catInfo(prevSec).icon}</span><small>${ICON.prev}Previous sector</small><b>${esc(catInfo(prevSec).long)}</b></button>` : ""}
+      ${nextSec ? `<button class="pg nx" data-nav="c:${esc(nextSec)}" style="--nc:${catInfo(nextSec).color}"><span class="ico">${catInfo(nextSec).icon}</span><small>Next sector${ICON.next}</small><b>${esc(catInfo(nextSec).long)} · ${storiesIn(nextSec).length}</b></button>`
+        : `<button class="pg nx" data-nav="brief"><small>That's every sector${ICON.next}</small><b>Back to the brief</b></button>`}
+    </div>
     <div class="swipe-hint">${ICON.swipe}Swipe sideways to change sector</div>
   </div>`, dir > 0 ? "r" : dir < 0 ? "l" : "f");
 }
@@ -549,10 +633,13 @@ function setPage(html, anim){
   const p = $("#page");
   p.innerHTML = html;
   p.style.transform = "";
+  p.classList.toggle("still", !!st.quiet);
   p.classList.remove("enter-r", "enter-l", "enter-f"); void p.offsetWidth;
-  if (!reduce && anim) p.classList.add("enter-" + anim);
+  if (!reduce && anim && !st.quiet) p.classList.add("enter-" + anim);
+  settleImgs(p);
 }
-function render(dir){
+function render(dir, quiet){
+  st.quiet = !!quiet;
   renderChrome();
   if (st.view === "cat" && !secs().includes(st.cat)) st.view = "brief";
   if (st.view === "brief") renderBrief(); else if (st.view === "cat") renderCat(dir); else renderClips();
@@ -561,7 +648,7 @@ function render(dir){
 /* ---------- navigation with real history (back gesture works) ---------- */
 function viewHash(){ return st.view === "cat" ? slug(st.cat) : st.view === "clips" ? "clips" : "brief"; }
 function go(view, cat, {push = true, dir = 0} = {}){
-  const was = st.view;
+  const was = st.view; $("#top").classList.remove("hide");
   st.view = view; st.cat = cat || null;
   const state = {v:view, c:st.cat};
   if (push && was === "brief" && view !== "brief") history.pushState(state, "", "#" + viewHash());
@@ -587,11 +674,33 @@ function lock(){ if (document.body.classList.contains("locked")) return; lockY =
 function unlock(){ if (!document.body.classList.contains("locked")) return; document.body.classList.remove("locked"); document.body.style.top = ""; window.scrollTo(0, lockY); }
 
 /* ---------- story reader: sections flow into each other ---------- */
-function openStory(sec, i){
+function openStory(sec, i, fromEl){
   const fresh = !$(".story");
   st.story = {sec, i};
-  if (fresh){ pushOverlay("story"); lock(); $("#layer").innerHTML = `<div class="story" id="story" role="dialog" aria-modal="true"></div>`; }
+  if (fresh){
+    pushOverlay("story"); lock();
+    $("#layer").innerHTML = `<div class="story" id="story" role="dialog" aria-modal="true"></div>`;
+    const box = $("#story"), r = fromEl?.getBoundingClientRect();
+    if (r && !reduce && r.width){
+      box.style.animation = "none";
+      const W = innerWidth, H = innerHeight;
+      box.animate([{clipPath:`inset(${r.top}px ${W - r.right}px ${H - r.bottom}px ${r.left}px round 20px)`, opacity:.6}, {clipPath:"inset(0px 0px 0px 0px round 0px)", opacity:1}], {duration:460, easing:"cubic-bezier(.22,.8,.25,1)"});
+    }
+  }
   paintStory(0);
+}
+function neighbour(d){
+  const {sec, i} = st.story, order = secs(), list = ordered(sec), si = order.indexOf(sec);
+  if (d > 0){
+    if (list[i + 1]) return {label:"Up next", title:list[i + 1].title, color:catInfo(sec).color, icon:catInfo(sec).icon};
+    const ns = order[si + 1];
+    if (ns) return {label:"Next · " + catInfo(ns).short, title:`${storiesIn(ns).length} ${catInfo(ns).long} ${storiesIn(ns).length === 1 ? "story" : "stories"}`, color:catInfo(ns).color, icon:catInfo(ns).icon};
+    return {label:"Finish", title:"You're all caught up", color:"var(--orange)", icon:ICON.check};
+  }
+  if (i > 0) return {label:"Previous", title:list[i - 1].title, color:catInfo(sec).color, icon:catInfo(sec).icon};
+  const ps = order[si - 1];
+  if (ps){ const pl = ordered(ps); return {label:"Back · " + catInfo(ps).short, title:pl[pl.length - 1].title, color:catInfo(ps).color, icon:catInfo(ps).icon}; }
+  return null;
 }
 function storyPageHTML(){
   const {sec, i} = st.story, list = ordered(sec), s = list[i], c = catInfo(sec);
@@ -600,17 +709,15 @@ function storyPageHTML(){
   const paras = (s.fullText || "").split(/\n+/).map(p => p.trim()).filter(Boolean);
   const facts = [s.outlet, s.outletType, s.edition && "Edition " + s.edition, pages(s.page), s.author && "By " + s.author, s.date && fmt(s.date,{day:"numeric",month:"short",year:"numeric"})].filter(Boolean);
   const media = s.clips?.length ? s.clips : (s.image ? [s.image] : []);
-  const nxt = list[i + 1], ns = secs()[secs().indexOf(sec) + 1];
-  const upNext = nxt ? `<button class="next" data-act="next"><span class="th">${visual(nxt) ? img(visual(nxt).src, 96) : ""}</span><span style="min-width:0"><small>Up next</small><b>${esc(nxt.title)}</b></span>${ICON.arrow}</button>`
-    : ns ? `<button class="next" data-act="next" style="--cc:${catInfo(ns).color}"><span class="th" style="display:grid;place-items:center;color:${catInfo(ns).color};background:var(--s2)">${catInfo(ns).icon}</span><span style="min-width:0"><small>Next sector</small><b>${esc(catInfo(ns).long)} · ${storiesIn(ns).length} stories</b></span>${ICON.arrow}</button>`
-    : `<button class="next" data-act="next"><span class="th" style="display:grid;place-items:center;background:var(--s2)"><img src="/logo.png" alt="" style="width:30px;height:auto"></span><span><small>That's everything</small><b>You're all caught up</b></span>${ICON.arrow}</button>`;
+  const pv = neighbour(-1), nx = neighbour(1);
+  const upNext = `<div class="pager2 ${pv ? "" : "one"}">
+    ${pv ? `<button class="pg pv" data-act="prev" style="--nc:${pv.color}"><span class="ico">${pv.icon}</span><small>${ICON.prev}${esc(pv.label)}</small><b>${esc(pv.title)}</b></button>` : ""}
+    <button class="pg nx" data-act="next" style="--nc:${nx.color}"><span class="ico">${nx.icon}</span><small>${esc(nx.label)}${ICON.next}</small><b>${esc(nx.title)}</b></button></div>`;
   return `<div class="st-page" style="--cc:${c.color}">
     <div class="st-top">
-      <div class="prog" aria-hidden="true">${list.map((_, k) => `<i class="${k < i ? "d" : k === i ? "c" : ""}"></i>`).join("")}</div>
+      <div class="prog">${list.map((x, k) => `<button class="${k < i ? "d" : k === i ? "c" : ""}" data-act="jump" data-k="${k}" aria-label="Story ${k + 1}: ${esc(x.title)}"><i></i></button>`).join("")}</div>
       <div class="st-ctl"><button class="rb" data-act="close" aria-label="Close">${ICON.down}</button>
-        <span class="pos num"><i></i>${esc(c.short)} · ${i + 1}/${list.length}</span>
-        <button class="rb" data-act="prev" aria-label="Previous story">${ICON.prev}</button>
-        <button class="rb" data-act="next" aria-label="Next story">${ICON.next}</button></div>
+        <span class="st-lbl"><span class="pos num"><i></i>${esc(c.long)} · ${i + 1} of ${list.length}</span><span class="mini">${esc(s.title)}</span></span></div>
     </div>
     <div class="st-scroll">
       <div class="st-hero ${v?.paper ? "paper" : ""}">${v ? img(v.src, 1080, "", 'loading="eager"') : `<div class="gen">${esc((s.outlet || "?").slice(0, 3).toUpperCase())}</div>`}</div>
@@ -631,18 +738,26 @@ function storyPageHTML(){
     <span class="edge-hint l">${ICON.prev}</span><span class="edge-hint r">${ICON.next}</span>
   </div>`;
 }
+function journeyHTML(curSec){
+  const order = secs(), ci = curSec == null ? order.length : order.indexOf(curSec);
+  return `<div class="journey" aria-hidden="true">${order.map((n, k) => { const c = catInfo(n); return `${k ? "<i></i>" : ""}<span class="${k < ci ? "dn" : k === ci ? "cur" : ""}" style="--cc2:${c.color}">${k < ci ? ICON.check : c.icon}</span>`; }).join("")}</div>`;
+}
 function interHTML(kind){
-  if (kind === "end") return `<div class="st-page" style="--cc:var(--orange)"><div class="inter">
+  if (kind === "end"){
+    const n = st.ed.stories.filter(isRead).length;
+    return `<div class="st-page" style="--cc:var(--orange)"><div class="inter">
     <button class="rb close" data-act="close" aria-label="Close">${ICON.down}</button>
-    <span class="done">${ICON.check}${st.ed.stories.length} stories read</span>
-    <span class="big"><img src="/logo-lg.png" alt=""></span>
+    ${journeyHTML(null)}
+    <span class="burst"><i></i><i></i><img src="/logo-lg.png" alt=""></span>
     <small>That's the brief</small><h2>You're all caught up</h2>
-    <p>${st.ed.version > 1 ? "We'll let you know if a new version arrives today." : "We'll let you know when the next edition is published."}</p>
+    <p>${n} of ${st.ed.stories.length} stories read. ${st.ed.version > 1 ? "We'll notify you if another update lands today." : "We'll notify you when the next edition is out."}</p>
     <div class="btns"><button class="btn1" data-act="close">Back to the brief</button><button class="btn2" data-act="prev">Back to the last story</button></div></div></div>`;
+  }
   const ns = st.story.nextSec, c = catInfo(ns), lead = leadOf(ns), prevC = catInfo(st.story.sec);
   return `<div class="st-page" style="--cc:${c.color}"><div class="inter">
     <button class="rb close" data-act="close" aria-label="Close">${ICON.down}</button>
     <span class="done">${ICON.check}${esc(prevC.long)} done</span>
+    ${journeyHTML(ns)}
     <span class="big">${c.icon}</span>
     <small>Up next</small><h2>${esc(c.long)}</h2>
     <p>${storiesIn(ns).length} ${storiesIn(ns).length === 1 ? "story" : "stories"} today</p>
@@ -663,6 +778,13 @@ function paintStory(dir){
     a.onfinish = () => old.remove();
   } else if (old) old.remove();
   if (st.story.inter === "sec" && !reduce) autoTimer = setTimeout(() => { if (st.story?.inter === "sec") step(1); }, 4000);
+  settleImgs(neu);
+  const sc = neu.querySelector(".st-scroll"), hero = neu.querySelector(".st-hero"), h1 = neu.querySelector(".st-body h1");
+  if (sc) sc.addEventListener("scroll", () => {
+    const y = sc.scrollTop;
+    if (hero && !reduce && y < 500){ hero.style.transform = `translateY(${y * .45}px)`; hero.style.opacity = Math.max(.15, 1 - y / 420); }
+    neu.classList.toggle("scrolled", !!h1 && y > h1.offsetTop + h1.offsetHeight - 70);
+  }, {passive:true});
   neu.querySelector("[data-act=close]")?.focus({preventScroll:true});
 }
 function step(d){
@@ -686,17 +808,32 @@ function step(d){
   if (ps){ st.story = {sec:ps, i:ordered(ps).length - 1}; return paintStory(-1); }
   bounce(-1);
 }
+function jump(k){ const s = st.story; if (!s || s.inter || k === s.i) return; const d = Math.sign(k - s.i); st.story = {sec:s.sec, i:k}; buzz(4); paintStory(d); }
 function bounce(d){ const p = $("#story .st-page"); if (p && !reduce) p.animate([{transform:"none"}, {transform:`translateX(${-d * 18}px)`}, {transform:"none"}], {duration:260, easing:"ease-out"}); }
-function closeStory(fromPop){
+function closeStory(fromPop, how){
   const el = $("#story"); if (!el || el.dataset.closing) return;
   el.dataset.closing = "1"; clearTimeout(autoTimer);
-  const sec = st.story?.sec;
+  const cur = st.story, sec = cur?.sec;
+  const curStory = cur && !cur.inter ? ordered(cur.sec)[cur.i] : null;
   st.story = null;
   if (!fromPop && history.state?.story) { history.back(); }
-  const done = () => { el.remove(); unlock(); if (st.view === "cat" && sec && sec !== st.cat) { go("cat", sec, {push:false}); } else render(0); };
+  const key = curStory ? (curStory.key || curStory.id) : null;
+  const findCard = () => key ? [...document.querySelectorAll("#page [data-skey]")].find(n => n.dataset.skey === key) : null;
+  const done = () => {
+    el.remove(); unlock();
+    if (st.view === "cat" && sec && sec !== st.cat) go("cat", sec, {push:false}); else render(0, true);
+    const card = findCard();
+    if (card){ const r = card.getBoundingClientRect(); if (r.top < 70 || r.bottom > innerHeight - 80) card.scrollIntoView({block:"center"}); card.style.setProperty("--cc", catInfo(curStory.section).color); card.classList.add("flash"); setTimeout(() => card.classList.remove("flash"), 1200); }
+  };
   if (reduce) return done();
-  const pg = el.firstElementChild;
-  const a = (pg || el).animate([{transform:pg?.style.transform || "none", opacity:1}, {transform:"translateY(60%)", opacity:0}], {duration:260, easing:"cubic-bezier(.4,0,1,1)", fill:"forwards"});
+  const card = how === "drag" ? null : findCard(), r = card?.getBoundingClientRect();
+  if (r && r.width && r.bottom > 60 && r.top < innerHeight - 70){
+    const W = innerWidth, H = innerHeight;
+    el.animate([{clipPath:"inset(0px 0px 0px 0px round 0px)", opacity:1}, {clipPath:`inset(${r.top}px ${W - r.right}px ${H - r.bottom}px ${r.left}px round 20px)`, opacity:.5}], {duration:380, easing:"cubic-bezier(.4,0,.2,1)", fill:"forwards"}).onfinish = done;
+    return;
+  }
+  const pg = el.lastElementChild;
+  const a = (pg || el).animate([{transform:pg?.style.transform || "none", opacity:1}, {transform:"translateY(70%)", opacity:0}], {duration:280, easing:"cubic-bezier(.4,0,1,1)", fill:"forwards"});
   a.onfinish = done;
 }
 
@@ -877,7 +1014,7 @@ document.addEventListener("click", async e => {
     store.set("gp-read-any", true);
     const sec = t.dataset.open;
     const i = t.dataset.key ? ordered(sec).findIndex(s => (s.key || s.id) === t.dataset.key) : +t.dataset.i;
-    return openStory(sec, Math.max(0, i));
+    return openStory(sec, Math.max(0, i), t);
   }
   if (a === "read-all"){
     store.set("gp-read-any", true);
@@ -885,6 +1022,7 @@ document.addEventListener("click", async e => {
     return openStory(secs()[0], 0);
   }
   if (a === "close") return closeStory();
+  if (a === "jump") return jump(+t.dataset.k);
   if (a === "prev") return step(-1);
   if (a === "next" || a === "continue") return step(1);
   if (a === "full"){
@@ -958,7 +1096,7 @@ document.addEventListener("touchend", () => {
     if (drag.story){ if (go2 && canStep(d)) { p.style.transform = ""; step(d); } else reset(); }
     else { if (go2 && canSwipeCat(d)) { p.style.transform = ""; swipeCat(d); } else reset(); }
   } else {
-    if (drag.story){ if (drag.dy > 120) closeStory(); else reset(); }
+    if (drag.story){ if (drag.dy > 120) closeStory(false, "drag"); else reset(); }
     else { const pulled = drag.dy * .5 > 60; reset(); ptr(0, pulled); if (pulled) refresh(true); }
   }
 }, {passive:true});
@@ -970,6 +1108,15 @@ function ptr(p, spin){
   el.style.transition = p ? "none" : "opacity .2s, transform .2s";
   el.style.opacity = Math.min(1, p / 60); el.style.transform = `translateY(${p - 30}px) scale(${.6 + Math.min(.4, p / 150)}) rotate(${p * 4}deg)`;
 }
+
+/* ---------- header hides on scroll down, returns on scroll up ---------- */
+let lastY = 0;
+addEventListener("scroll", () => {
+  if (document.body.classList.contains("locked")) return;
+  const y = window.scrollY, top = $("#top");
+  if (y > lastY + 6 && y > 90) top.classList.add("hide"); else if (y < lastY - 6 || y < 60) top.classList.remove("hide");
+  lastY = y;
+}, {passive:true});
 
 /* ---------- intro + boot ---------- */
 function intro(){
@@ -1006,6 +1153,7 @@ function routeFromHash(){
   store.set("gp-visits", (store.get("gp-visits") || 0) + 1);
   intro();
   const cached = store.get("gp-cache");
+  if (!cached?.ed) $("#page").innerHTML = `<div style="display:grid;gap:10px;margin-top:12px" aria-label="Loading"><div class="sk" style="height:30px;width:60%"></div><div class="sk" style="height:min(37vw,190px)"></div><div class="tiles"><div class="sk" style="height:104px"></div><div class="sk" style="height:104px"></div><div class="sk" style="height:104px"></div><div class="sk" style="height:104px"></div></div><div class="sk" style="height:46px"></div></div>`;
   if (cached?.ed){ st.index = cached.index; st.date = cached.date; st.ed = cached.ed; routeFromHash(); } // instant open, then refresh
   try {
     await loadIndex();
