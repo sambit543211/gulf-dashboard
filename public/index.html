@@ -426,7 +426,7 @@ function renderBrief(){
   const greet = st.date !== todayIST() ? fmt(st.date, {weekday:"long"}) + "'s brief" : hr < 12 ? "Good morning" : hr < 17 ? "Good afternoon" : "Good evening";
   const last = (ed.versions || []).at(-1), first = (ed.versions || [])[0];
   const tm = v => new Date(v.at).toLocaleTimeString("en-IN", {hour:"numeric", minute:"2-digit", timeZone:"Asia/Kolkata"});
-  const upd = ed.version > 1 && last ? `<div class="upd"><i></i><span><b>Updated ${tm(last)}</b> · ${last.added} new ${last.added === 1 ? "story" : "stories"} since ${tm(first)}</span></div>` : "";
+  const upd = ed.version > 1 && last && last.added > 0 ? `<div class="upd"><i></i><span><b>Updated ${tm(last)}</b> · ${last.added} new ${last.added === 1 ? "story" : "stories"} since ${tm(first)}</span></div>` : "";
   const tile = n => {
     const c = catInfo(n), l = storiesIn(n), lead = leadOf(n), nn = l.filter(isNew).length;
     const thumbs = l.map(visual).filter(Boolean).slice(0, 3);
