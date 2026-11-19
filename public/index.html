@@ -17,7 +17,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
 <script src="/config.js"></script>
 <style>
 /* Glance → Choose → Read, built for one thumb.
@@ -34,6 +34,7 @@
   --c-gulf:#FF7403; --c-infra:#93DAFE; --c-oil:#5B8DFF; --c-auto:#C9D6FF; --c-other:#9FB0E0;
   --f-d:"Montserrat","Arial Black",system-ui,sans-serif;
   --f-b:"Helvetica Neue","Inter",Helvetica,Arial,system-ui,sans-serif;
+  --f-s:"Newsreader",Georgia,"Times New Roman",serif;
   --ease:cubic-bezier(.22,.8,.25,1); --spring:cubic-bezier(.34,1.45,.64,1);
   --top:env(safe-area-inset-top,0px); --bot:env(safe-area-inset-bottom,0px);
   --nav-h:66px;
@@ -48,7 +49,7 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
 [hidden]{display:none!important}
 :focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:10px}
 .num{font-variant-numeric:tabular-nums}
-.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.gut{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 body.locked{position:fixed;left:0;right:0;overflow:hidden}
 
 /* ambient light (fixed, never moves with overscroll) */
@@ -118,9 +119,9 @@ main{max-width:1100px;margin:0 auto;padding-top:calc(var(--top) + 58px);padding-
 .upd{display:flex;align-items:center;gap:10px;margin-top:14px;padding:9px 12px;border-radius:12px;background:rgba(255,116,3,.1);border:1px solid rgba(255,116,3,.28);font-size:13px;color:#ffd7b5}
 .upd i{width:7px;height:7px;border-radius:50%;background:var(--orange);flex:none}
 .upd b{color:#fff;font-weight:600}
-.spot-row{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding-right:max(16px,env(safe-area-inset-right,0px));overscroll-behavior-x:contain}
+.spot-row{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-right:calc(-1 * max(20px,env(safe-area-inset-right,0px)));padding-right:max(20px,env(safe-area-inset-right,0px));overscroll-behavior-x:contain}
 .spot-row::-webkit-scrollbar{display:none}
-.spot-card{position:relative;flex:0 0 calc(100% - 26px);scroll-snap-align:start;scroll-snap-stop:always;height:min(37vw,190px);border-radius:20px;overflow:hidden;isolation:isolate;background:var(--navy);text-align:left;transition:transform .2s var(--ease)}
+.spot-card{position:relative;flex:0 0 calc(100% - 26px);scroll-snap-align:start;scroll-snap-stop:always;height:min(32vw,190px);border-radius:20px;overflow:hidden;isolation:isolate;background:var(--navy);text-align:left;transition:transform .2s var(--ease)}
 .spot-card:only-child{flex-basis:100%}
 .spot-card:active{transform:scale(.98)}
 .spot-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
@@ -131,15 +132,15 @@ main{max-width:1100px;margin:0 auto;padding-top:calc(var(--top) + 58px);padding-
 .flag{align-self:flex-start;padding:5px 8px;border-radius:7px;background:var(--orange);color:var(--ink);font:800 10px/1 var(--f-d);letter-spacing:.1em;text-transform:uppercase}
 .nw{display:inline-block;padding:3px 6px;border-radius:5px;background:var(--orange);color:var(--ink);font:800 9.5px/1.2 var(--f-d);letter-spacing:.04em}
 .spot-card .nw{position:absolute;top:12px;right:12px}
-.dots{display:flex;gap:5px;justify-content:center;margin-top:7px}
+.dots{display:flex;gap:5px;justify-content:center;margin-top:6px}
 .dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.22);transition:all .3s var(--ease)}
 .dots i.on{width:18px;background:var(--orange)}
 .quiet{display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:18px;background:var(--s1);border:1px solid var(--line);color:var(--fg-2);font-size:14px}
 .quiet img{width:28px}
-.eyebrow{display:flex;align-items:center;justify-content:space-between;font:800 10.5px/1 var(--f-d);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:12px 0 8px}
+.eyebrow{display:flex;align-items:center;justify-content:space-between;font:800 10.5px/1 var(--f-d);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:10px 0 7px}
 .eyebrow span{letter-spacing:.02em;text-transform:none;font-weight:600}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.tile{position:relative;display:flex;flex-direction:column;gap:5px;min-height:104px;padding:10px 12px;border-radius:18px;background:radial-gradient(120% 90% at 100% 0%,color-mix(in srgb,var(--cc) 14%,transparent),transparent 60%),var(--s1);border:1px solid var(--line);text-align:left;overflow:hidden;transition:transform .2s var(--ease),border-color .3s}
+.tile{position:relative;display:flex;flex-direction:column;gap:5px;min-height:96px;padding:10px 12px;border-radius:18px;background:radial-gradient(120% 90% at 100% 0%,color-mix(in srgb,var(--cc) 14%,transparent),transparent 60%),var(--s1);border:1px solid var(--line);text-align:left;overflow:hidden;transition:transform .2s var(--ease),border-color .3s}
 .tile:active{transform:scale(.97)}
 .tile .hd{display:flex;align-items:center;gap:7px;font:700 13px/1.1 var(--f-d)}
 .tile .hd svg{width:18px;height:18px;color:var(--cc);flex:none}
@@ -388,6 +389,61 @@ img.fx{opacity:0;transition:opacity .5s var(--ease)} img.fx.ld{opacity:1}
 .sk{border-radius:18px;background:linear-gradient(100deg,var(--s1) 30%,var(--s2) 50%,var(--s1) 70%);background-size:300% 100%;animation:shim 1.4s linear infinite}
 @keyframes shim{from{background-position:100% 0}to{background-position:-50% 0}}
 
+/* ---------- editorial layer ---------- */
+.hdr-ctx{margin-left:auto;font:600 12px/1 var(--f-d);color:var(--muted);white-space:nowrap}
+.mast{margin:16px 0 4px}
+.mast .eb{display:flex;align-items:center;gap:8px;font:700 10.5px/1 var(--f-d);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mast .mrow{display:flex;align-items:flex-end;gap:14px;margin-top:8px}
+.mast .md{flex:1;min-width:0;text-align:left}
+.mast h1{margin:0;font:500 clamp(24px,6.8vw,34px)/1.06 var(--f-s);letter-spacing:-.01em;color:var(--fg-2)}
+.mast h1 span{color:#fff;font-weight:600}
+.mast .chev{display:inline-grid;place-items:center;width:24px;height:24px;margin-left:6px;vertical-align:4px;border-radius:50%;background:var(--s2);border:1px solid var(--line);color:var(--fg-2)}
+.mast .chev svg{width:13px;height:13px}
+.mast .md:active .chev{background:var(--s3)}
+.play-wrap{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px}
+.play-wrap small{font:700 10.5px/1 var(--f-d);letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)}
+.play{position:relative;width:60px;height:60px;display:grid;place-items:center;transition:transform .2s var(--spring)}
+.play:active{transform:scale(.92)}
+.play svg.r{position:absolute;inset:0;width:60px;height:60px;transform:rotate(-90deg)}
+.play circle{fill:none;stroke-width:3;stroke-linecap:round}
+.play .bg{stroke:rgba(255,255,255,.1)} .play .fg{stroke:#fff;transition:stroke-dashoffset 1.2s var(--ease)}
+.play .disc{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--orange);color:var(--ink);box-shadow:0 10px 26px -8px rgba(255,116,3,.75)}
+.play .disc svg{width:20px;height:20px;margin-left:3px}
+button.upd{width:100%;text-align:left}
+.upd em{margin-left:auto;display:flex;align-items:center;gap:2px;font:700 12px/1 var(--f-d);font-style:normal;color:var(--orange)}
+.upd em svg{width:14px;height:14px}
+.eyebrow.first{margin-top:12px}
+.eyebrow .gl{display:flex;align-items:center;gap:7px;color:var(--fg-2)}
+.eyebrow .gl img{width:16px;height:auto}
+.spot-card h3{font:600 17px/1.2 var(--f-s);letter-spacing:-.005em;-webkit-line-clamp:2}
+.spot-card .tx{gap:4px;bottom:11px}
+.spot-card::after{background:linear-gradient(180deg,rgba(5,9,23,0) 0%,rgba(5,9,23,.25) 30%,rgba(5,9,23,.95) 85%)}
+.spot-card .cnt{position:absolute;top:12px;left:12px;padding:4px 8px;border-radius:999px;background:rgba(5,9,23,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:700 10.5px/1 var(--f-d);color:#fff}
+.tile p{font:600 14px/1.3 var(--f-s);color:var(--fg);-webkit-line-clamp:2}
+.lead h2{font:600 clamp(21px,5.8vw,26px)/1.15 var(--f-s);letter-spacing:-.005em}
+.rows{display:block;gap:0;border-top:1px solid var(--line)}
+.row{min-height:88px;gap:14px;padding:13px 2px;border-radius:0;background:none;border:0;border-bottom:1px solid var(--line)}
+.row:active{transform:none;background:rgba(147,218,254,.04)}
+.row .th{width:58px;height:68px}
+.row h3{font:600 16.5px/1.25 var(--f-s);-webkit-line-clamp:3;letter-spacing:-.003em}
+.row .rm{display:flex;align-items:center;gap:4px;font:600 11.5px/1 var(--f-d);color:var(--muted)}
+.row .rm svg{width:12px;height:12px}
+.row .nwt{padding:3px 6px;border-radius:5px;background:var(--orange);color:var(--ink);font:800 9.5px/1.2 var(--f-d);letter-spacing:.04em;text-transform:uppercase}
+.row.read h3{color:var(--muted);font-weight:500}
+.st-body h1{font:600 calc(clamp(26px,7vw,36px) * var(--ts,1))/1.12 var(--f-s);letter-spacing:-.01em}
+.crux p{font:500 calc(19px * var(--ts,1))/1.5 var(--f-s)}
+.full .in{font:400 calc(18px * var(--ts,1))/1.68 var(--f-s);color:#D7DEF5}
+.full .in p:first-child::first-letter{font:600 3.1em/.82 var(--f-s);color:var(--cc);float:left;margin:4px 8px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:3px 7px;font-size:13px;color:var(--fg-2)}
+.meta i{font-style:normal;color:var(--muted)}
+.links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:-4px}
+.links a{font:600 13px/1.3 var(--f-d);color:var(--sky);text-decoration:none}
+.rb.aa{font:600 15px/1 var(--f-s);margin-left:auto}
+.pg b{font:600 15px/1.28 var(--f-s)}
+.inter .lead-line{font:600 16px/1.35 var(--f-s)}
+.inter h2{font:600 34px/1.05 var(--f-s);letter-spacing:-.01em}
+.cat-h h1{font:600 clamp(26px,7vw,34px)/1 var(--f-s);letter-spacing:-.01em}
+
 /* desktop: nav becomes a left rail; stories open as a side panel */
 @media (min-width:900px){
   .nav{top:0;bottom:0;right:auto;width:210px;flex-direction:column;justify-content:flex-start;gap:4px;padding:calc(84px + var(--top)) 12px 20px;border-top:0;border-right:1px solid var(--line)}
@@ -427,8 +483,8 @@ img.fx{opacity:0;transition:opacity .5s var(--ease)} img.fx.ld{opacity:1}
 <header class="top" id="top">
   <div class="bar gut">
     <img class="logo" id="hdr-logo" src="/logo.png" alt="Gulf">
-    <div class="brand"><b>Gulf <em>Pulse</em></b><span><i class="live" id="live"></i><span id="status">Loading</span></span></div>
-    <button class="pill-btn" id="date-btn" aria-haspopup="dialog" aria-label="Choose an edition"><span id="date-label">Today</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+    <div class="brand"><b>Gulf <em>Pulse</em></b></div>
+    <span id="hdr-ctx" class="hdr-ctx"></span>
     <button class="icon-btn" id="bell" aria-label="Turn on notifications" hidden></button>
   </div>
 </header>
@@ -457,6 +513,7 @@ const ICON = {
   prev: svg('<path d="m15 6-6 6 6 6"/>', 'stroke-width="2.4"'),
   next: svg('<path d="m9 6 6 6-6 6"/>', 'stroke-width="2.4"'),
   arrow: svg('<path d="M5 12h14M13 6l6 6-6 6"/>', 'stroke-width="2.4"'),
+  share: svg('<path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>'),
   read: svg('<path d="M4 5h13a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2z"/><path d="M8 9h7M8 13h7"/>'),
   out: svg('<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>', 'stroke-width="2.2"'),
   bell: svg('<path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>'),
@@ -504,6 +561,8 @@ const storiesIn = sec => st.ed.stories.filter(s => s.section === sec);
 const leadOf = sec => { const l = storiesIn(sec); const id = (st.ed.leads || {})[sec]; return l.find(s => s.key === id) || l.find(s => visual(s)) || l[0]; };
 const ordered = sec => { const l = storiesIn(sec), lead = leadOf(sec); return lead ? [lead, ...l.filter(s => s !== lead)] : []; };
 const secs = () => st.ed.sections;
+const readMins = s => Math.max(1, Math.round(((s.fullText || s.summary || "").split(/\s+/).length) / 220));
+const SIZES = [1, 1.12, 1.25];
 const slug = n => "c-" + catInfo(n).short.toLowerCase().replace(/[^a-z]+/g, "-").replace(/-+$/, "");
 
 /* ---------- data ---------- */
@@ -522,11 +581,8 @@ async function loadEdition(date){
 
 /* ---------- chrome ---------- */
 function renderChrome(){
-  const latest = st.preview || st.date === st.index[0]?.date;
-  $("#live").classList.toggle("off", !latest);
-  $("#status").textContent = st.preview ? "Preview" : latest ? `Latest edition · ${timeIST(st.ed.publishedAt || Date.now())}` : "Past edition";
-  const t = todayIST(), dd = st.date === t ? "Today" : fmt(st.date, {weekday:"short", day:"numeric", month:"short"});
-  $("#date-label").textContent = dd;
+  // Outside the brief, the header quietly says which edition you're in.
+  $("#hdr-ctx").textContent = st.view === "brief" ? "" : fmt(st.date, {weekday:"short", day:"numeric", month:"short"});
   const all = secs(), max = 4, shown = all.length > max ? all.slice(0, max - 1) : all;
   const b = (id, label, icon, color, badge, cur) => `<button data-nav="${esc(id)}" style="${color ? `--cc:${color}` : ""}" aria-current="${cur ? "page" : "false"}"><span class="ic">${icon}${badge ? `<span class="badge num">${badge}</span>` : ""}</span><span class="l">${esc(label)}</span></button>`;
   const moreCur = st.view === "cat" && !shown.includes(st.cat);
@@ -554,7 +610,9 @@ function renderBrief(){
   const isToday = st.date === todayIST();
   const greet = !isToday ? fmt(st.date, {weekday:"long"}) + "'s brief" : hr < 12 ? "Good morning" : hr < 17 ? "Good afternoon" : "Good evening";
   const vs = ed.versions || [], last = vs.at(-1), first = vs[0];
-  const upd = ed.version > 1 && last && last.added > 0 ? `<div class="upd"><i></i><span><b>Updated ${timeIST(last.at)}</b> · ${last.added} new ${last.added === 1 ? "story" : "stories"} since ${timeIST(first.at)}</span></div>` : "";
+  const newCount = ed.stories.filter(isNew).length;
+  const upd = ed.version > 1 && last && last.added > 0 && newCount ? `<button class="upd" data-act="read-new"><i></i><span><b>${newCount} new ${newCount === 1 ? "story" : "stories"}</b> · updated ${timeIST(last.at)}</span><em>Read ${ICON.next}</em></button>` : "";
+  const latest = st.preview || st.date === st.index[0]?.date;
   const unread = ed.stories.filter(s => !isRead(s)).length;
   let ti = 2;
   const tile = (n, wide) => {
@@ -573,21 +631,28 @@ function renderBrief(){
       <p>Today's newspaper cut-outs</p>
       <span class="stack">${clips.slice(0, 3).map(s => `<span>${img(s.clips[0].src, 96, "", 'loading="eager"')}</span>`).join("")}</span></button>`);
   setPage(`
+    <div class="mast">
+      <div class="eb"><i class="live ${latest ? "" : "off"}"></i>${esc(greet)} · ${st.preview ? "Preview" : latest ? "Published " + timeIST(ed.publishedAt || Date.now()) : "Past edition"}</div>
+      <div class="mrow">
+        <button class="md" data-act="editions" aria-label="Change edition"><h1>${fmt(st.date,{weekday:"long"})},<br><span>${fmt(st.date,{day:"numeric",month:"long"})}</span><i class="chev">${ICON.down}</i></h1></button>
+        <span class="play-wrap"><button class="play" data-act="read-all" aria-label="${unread === ed.stories.length ? "Read today's brief" : unread ? "Continue reading" : "Read it again"}"><svg class="r" viewBox="0 0 56 56"><circle class="bg" cx="28" cy="28" r="26"/><circle class="fg" cx="28" cy="28" r="26" stroke-dasharray="163.4" stroke-dashoffset="${(163.4 * unread / ed.stories.length).toFixed(1)}"/></svg><span class="disc">${ICON.play}</span></button><small>${unread === ed.stories.length ? "Read" : unread ? "Continue" : "Again"}</small></span>
+      </div>
+    </div>
     ${upd}
-    <div class="greet"><h1>${esc(greet)}.</h1><span>${fmt(st.date,{weekday:"short",day:"numeric",month:"short"})}</span></div>
     <div class="brief-grid">
       <section aria-label="Gulf in the news">
+        <div class="eyebrow first"><span class="gl"><img src="/logo.png" alt="">Gulf in the news</span><span>${gulf.length ? gulf.length + (gulf.length === 1 ? " mention" : " mentions") : ""}</span></div>
         ${gulf.length ? `<div class="spot-row" id="spot-row">${gulf.map((s, i) => { const v = visual(s); return `
           <button class="spot-card" data-open="${esc(GULF)}" data-i="${i}" data-skey="${esc(s.key || s.id)}" style="--i:${i}">${v ? img(v.src, 640, "", i ? "" : 'loading="eager" fetchpriority="high"') : ""}
-            ${isNew(s) ? `<span class="nw">NEW</span>` : ""}
-            <span class="tx"><span class="flag">Gulf in the news${gulf.length > 1 ? ` · ${i + 1}/${gulf.length}` : ""}</span><h3>${esc(s.title)}</h3><span class="meta">${esc(s.outlet)}${s.platform ? " · " + esc(s.platform) : ""}</span></span></button>`; }).join("")}</div>
+            ${isNew(s) ? `<span class="nw">NEW</span>` : ""}${gulf.length > 1 ? `<span class="cnt num">${i + 1}/${gulf.length}</span>` : ""}
+            <span class="tx"><h3>${esc(s.title)}</h3><span class="meta">${esc(s.outlet)}${s.platform ? " · " + esc(s.platform) : ""}</span></span></button>`; }).join("")}</div>
           ${gulf.length > 1 ? `<div class="dots" id="dots">${gulf.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>` : ""}`
         : `<div class="quiet"><img src="/logo.png" alt=""><span>No Gulf mentions in today's coverage.</span></div>`}
       </section>
       <section aria-label="Your sectors today">
-        <div class="eyebrow">Your sectors today<span>${ed.stories.length} stories</span></div>
+        <div class="eyebrow">Your sectors<span>${ed.stories.length} stories · ${new Set(ed.stories.map(s => s.outlet)).size} outlets</span></div>
         <div class="tiles">${tiles.join("")}</div>
-        <button class="read-all" data-act="read-all" style="--i:${ti}"><span class="ring"><svg class="r" viewBox="0 0 28 28"><circle class="bg" cx="14" cy="14" r="12"/><circle class="fg" cx="14" cy="14" r="12" stroke-dasharray="75.4" stroke-dashoffset="${(75.4 * unread / ed.stories.length).toFixed(1)}"/></svg>${ICON.play.replace("<svg", '<svg class="pl"')}</span><span>${unread === ed.stories.length ? "Read today's brief" : unread ? "Continue reading" : "Read it again"}</span>${unread && unread < ed.stories.length ? `<small class="num">${ed.stories.length - unread}/${ed.stories.length}</small>` : ""}</button>
+        <button class="read-all" hidden data-act="read-all" style="--i:${ti}"><span class="ring"><svg class="r" viewBox="0 0 28 28"><circle class="bg" cx="14" cy="14" r="12"/><circle class="fg" cx="14" cy="14" r="12" stroke-dasharray="75.4" stroke-dashoffset="${(75.4 * unread / ed.stories.length).toFixed(1)}"/></svg>${ICON.play.replace("<svg", '<svg class="pl"')}</span><span>${unread === ed.stories.length ? "Read today's brief" : unread ? "Continue reading" : "Read it again"}</span>${unread && unread < ed.stories.length ? `<small class="num">${ed.stories.length - unread}/${ed.stories.length}</small>` : ""}</button>
       </section>
     </div>`, "f");
   const row = $("#spot-row"), dots = $("#dots");
@@ -610,9 +675,8 @@ function renderCat(dir){
       <span class="tx">${kick(lead)}<h2>${esc(lead.title)}</h2></span></button>
     <div class="rows">${rest.map((s, k) => { const v = visual(s), r = isRead(s); return `
       <button class="row ${r ? "read" : ""}" data-open="${esc(n)}" data-i="${k + 1}" data-skey="${esc(s.key || s.id)}" style="--i:${Math.min(k + 1, 9)}">
-        <span class="th ${v ? (v.paper ? "" : "photo") : "none"}">${v ? img(v.src, 256) : ICON.other}</span>
-        <span class="tx">${kick(s)}<h3>${esc(s.title)}</h3></span>
-        ${isNew(s) ? `<span class="dot" title="New"></span>` : r ? `<span class="check">${ICON.check}</span>` : ""}</button>`; }).join("")}</div>
+        <span class="tx">${kick(s)}<h3>${esc(s.title)}</h3><span class="rm">${isNew(s) ? `<b class="nwt">New</b>` : r ? `${ICON.check}Read` : readMins(s) + " min read"}</span></span>
+        <span class="th ${v ? (v.paper ? "" : "photo") : "none"}">${v ? img(v.src, 256) : ICON.other}</span></button>`; }).join("")}</div>
     <div class="pager2 ${prevSec ? "" : "one"}" style="margin-top:14px;--i:10">
       ${prevSec ? `<button class="pg pv" data-nav="c:${esc(prevSec)}" style="--nc:${catInfo(prevSec).color}"><span class="ico">${catInfo(prevSec).icon}</span><small>${ICON.prev}Previous sector</small><b>${esc(catInfo(prevSec).long)}</b></button>` : ""}
       ${nextSec ? `<button class="pg nx" data-nav="c:${esc(nextSec)}" style="--nc:${catInfo(nextSec).color}"><span class="ico">${catInfo(nextSec).icon}</span><small>Next sector${ICON.next}</small><b>${esc(catInfo(nextSec).long)} · ${storiesIn(nextSec).length}</b></button>`
@@ -679,7 +743,7 @@ function openStory(sec, i, fromEl){
   st.story = {sec, i};
   if (fresh){
     pushOverlay("story"); lock();
-    $("#layer").innerHTML = `<div class="story" id="story" role="dialog" aria-modal="true"></div>`;
+    $("#layer").innerHTML = `<div class="story" id="story" role="dialog" aria-modal="true" style="--ts:${SIZES[store.get("gp-ts") || 0]}"></div>`;
     const box = $("#story"), r = fromEl?.getBoundingClientRect();
     if (r && !reduce && r.width){
       box.style.animation = "none";
@@ -707,7 +771,7 @@ function storyPageHTML(){
   markRead(s);
   const v = visual(s);
   const paras = (s.fullText || "").split(/\n+/).map(p => p.trim()).filter(Boolean);
-  const facts = [s.outlet, s.outletType, s.edition && "Edition " + s.edition, pages(s.page), s.author && "By " + s.author, s.date && fmt(s.date,{day:"numeric",month:"short",year:"numeric"})].filter(Boolean);
+  const facts = [s.outlet, s.edition && s.edition.split(",")[0], pages(s.page), s.author && s.author !== "Bureau" ? "By " + s.author : null, fmt(s.date || st.date,{day:"numeric",month:"short"}), readMins(s) + " min read"].filter(Boolean);
   const media = s.clips?.length ? s.clips : (s.image ? [s.image] : []);
   const pv = neighbour(-1), nx = neighbour(1);
   const upNext = `<div class="pager2 ${pv ? "" : "one"}">
@@ -717,7 +781,8 @@ function storyPageHTML(){
     <div class="st-top">
       <div class="prog">${list.map((x, k) => `<button class="${k < i ? "d" : k === i ? "c" : ""}" data-act="jump" data-k="${k}" aria-label="Story ${k + 1}: ${esc(x.title)}"><i></i></button>`).join("")}</div>
       <div class="st-ctl"><button class="rb" data-act="close" aria-label="Close">${ICON.down}</button>
-        <span class="st-lbl"><span class="pos num"><i></i>${esc(c.long)} · ${i + 1} of ${list.length}</span><span class="mini">${esc(s.title)}</span></span></div>
+        <span class="st-lbl"><span class="pos num"><i></i>${esc(c.long)} · ${i + 1} of ${list.length}</span><span class="mini">${esc(s.title)}</span></span>
+        <button class="rb aa" data-act="size" aria-label="Text size">Aa</button></div>
     </div>
     <div class="st-scroll">
       <div class="st-hero ${v?.paper ? "paper" : ""}">${v ? img(v.src, 1080, "", 'loading="eager"') : `<div class="gen">${esc((s.outlet || "?").slice(0, 3).toUpperCase())}</div>`}</div>
@@ -725,7 +790,8 @@ function storyPageHTML(){
         <span class="kick" style="color:${c.color}">${esc(c.long)} <em>· ${KIND[s.kind]}${s.platform ? " · " + esc(s.platform) : ""}</em>${st.ed.version > 1 && s.firstVersion === st.ed.version ? ` <span class="nw">NEW</span>` : ""}</span>
         <h1>${esc(s.title)}</h1>
         <div class="crux"><span class="lab">The crux</span><p>${hl(s.summary)}</p></div>
-        <div class="facts">${facts.map(f => `<span>${esc(f)}</span>`).join("")}${(s.alsoOn || []).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">Also on ${esc(a.label)} ↗</a>`).join("")}</div>
+        <div class="meta">${facts.map(esc).join('<i aria-hidden="true">·</i>')}</div>
+        <div class="links"><a href="${esc(s.url)}" target="_blank" rel="noopener">${s.kind === "print" ? "Open in media tracker" : "Open on " + esc(s.platform || s.outlet)} ↗</a>${(s.alsoOn || []).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">Also on ${esc(a.label)} ↗</a>`).join("")}</div>
         <div class="full"><div class="in">${paras.map(p => `<p>${hl(p)}</p>`).join("")}</div></div>
         ${upNext}
       </div>
@@ -733,7 +799,7 @@ function storyPageHTML(){
     <div class="act">
       <button class="p" data-act="full" ${paras.length ? "" : "disabled"} aria-expanded="false">${ICON.read}<span>Full story</span></button>
       <button data-act="clip" ${media.length ? "" : "disabled"}>${ICON.clip}<span>${s.clips?.length ? "Clipping" : "Image"}</span></button>
-      <a href="${esc(s.url)}" target="_blank" rel="noopener">${ICON.out}<span>Source</span></a>
+      <button data-act="share">${ICON.share}<span>Share</span></button>
     </div>
     <span class="edge-hint l">${ICON.prev}</span><span class="edge-hint r">${ICON.next}</span>
   </div>`;
@@ -835,6 +901,15 @@ function closeStory(fromPop, how){
   const pg = el.lastElementChild;
   const a = (pg || el).animate([{transform:pg?.style.transform || "none", opacity:1}, {transform:"translateY(70%)", opacity:0}], {duration:280, easing:"cubic-bezier(.4,0,1,1)", fill:"forwards"});
   a.onfinish = done;
+}
+
+async function shareStory(){
+  const s = ordered(st.story.sec)[st.story.i];
+  const text = `${s.title}\n${[s.outlet, pages(s.page), fmt(s.date || st.date, {day:"numeric", month:"short"})].filter(Boolean).join(" · ")}\n\n${s.summary}`;
+  try { if (navigator.share){ await navigator.share({title:s.title, text, url:s.url}); return; } }
+  catch (e){ if (e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(text + "\n\n" + s.url); toast("Copied. Paste it into WhatsApp or email."); }
+  catch (e){ toast("Couldn't share this story."); }
 }
 
 /* ---------- lightbox: pinch, pan, double-tap ---------- */
@@ -1022,6 +1097,10 @@ document.addEventListener("click", async e => {
     return openStory(secs()[0], 0);
   }
   if (a === "close") return closeStory();
+  if (a === "editions") return openEditions();
+  if (a === "share") return shareStory();
+  if (a === "size"){ const k = ((store.get("gp-ts") || 0) + 1) % SIZES.length; store.set("gp-ts", k); $("#story").style.setProperty("--ts", SIZES[k]); toast(["Standard text", "Larger text", "Largest text"][k]); return; }
+  if (a === "read-new"){ for (const n of secs()){ const k = ordered(n).findIndex(isNew); if (k >= 0) return openStory(n, k); } return; }
   if (a === "jump") return jump(+t.dataset.k);
   if (a === "prev") return step(-1);
   if (a === "next" || a === "continue") return step(1);
@@ -1157,7 +1236,7 @@ function routeFromHash(){
   if (cached?.ed){ st.index = cached.index; st.date = cached.date; st.ed = cached.ed; routeFromHash(); } // instant open, then refresh
   try {
     await loadIndex();
-    if (!st.index.length){ $("#page").innerHTML = `<div class="empty"><img src="/logo-lg.png" alt=""><h2>No edition yet</h2><p>The first brief appears here as soon as it's published.</p></div>`; $("#nav").innerHTML = ""; $("#status").textContent = "Waiting for the first edition"; return; }
+    if (!st.index.length){ $("#page").innerHTML = `<div class="empty"><img src="/logo-lg.png" alt=""><h2>No edition yet</h2><p>The first brief appears here as soon as it's published.</p></div>`; $("#nav").innerHTML = ""; return; }
     const target = cached?.date && cached.date === st.index[0].date && cached.ed?.version === st.index[0].version ? null : st.index[0].date;
     if (target){ await loadEdition(target); if (!$(".story")) cached?.ed ? render(0) : routeFromHash(); }
     else renderChrome();
