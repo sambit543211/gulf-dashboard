@@ -41,7 +41,9 @@ create view public.edition_index with (security_invoker = true) as
 create or replace function public._check_secret(p_secret text) returns void
 language plpgsql security definer set search_path = public as $$
 begin
-  if p_secret is null or p_secret is distinct from (select v from app_config where k = 'publish_secret') then
+  -- Only a SHA-256 hash of the publish secret is stored (app_config k = 'publish_secret_sha256').
+  if p_secret is null or encode(sha256(convert_to(p_secret, 'UTF8')), 'hex')
+     is distinct from (select v from app_config where k = 'publish_secret_sha256') then
     raise exception 'forbidden' using errcode = '42501';
   end if;
 end $$;

@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gulf Pulse · Publish</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#050A1F">
+<link rel="icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@400;500;600&display=swap">
+<script src="/config.js"></script>
+<style>
+/* Publisher tool: three steps (upload → review → publish). Calm, utilitarian, same dark brand. */
+:root{
+  --navy:#192C76; --orange:#FF7403; --sky:#93DAFE; --bg:#050A1F; --panel:#0C1438; --panel-2:#131E4D;
+  --line:rgba(147,218,254,.16); --fg:#F2F6FF; --fg-2:#B7C3E6; --muted:#8592BE; --good:#5EE0A0; --bad:#FF7B7B;
+  --f-d:"Montserrat","Arial Black",system-ui,sans-serif; --f-b:"Inter","Helvetica Neue",Arial,system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{color:var(--fg);font:15px/1.5 var(--f-b);-webkit-font-smoothing:antialiased}
+button,select,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px;border-radius:8px}
+.wrap{max-width:820px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(120px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+header img{width:40px}
+header b{display:block;font:800 18px/1 var(--f-d)} header b em{font-style:normal;color:var(--orange)}
+header span{font-size:12.5px;color:var(--muted)}
+header a{margin-left:auto;font:700 12.5px/1 var(--f-d);color:var(--sky);text-decoration:none;padding:9px 12px;border:1px solid var(--line);border-radius:999px}
+.steps{display:flex;gap:6px;margin-bottom:20px}
+.steps span{flex:1;padding:9px 6px;border-radius:10px;background:var(--panel);border:1px solid var(--line);text-align:center;font:700 12px/1.2 var(--f-d);color:var(--muted)}
+.steps span.on{background:var(--orange);border-color:var(--orange);color:var(--bg)}
+.steps span.done{color:var(--good);border-color:rgba(94,224,160,.4)}
+h1{font:900 clamp(24px,6vw,32px)/1.1 var(--f-d);letter-spacing:-.02em;margin:0 0 6px}
+.lede{color:var(--fg-2);margin:0 0 18px}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:220px;padding:26px;border:2px dashed rgba(147,218,254,.35);border-radius:22px;background:var(--panel);text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.drop:hover,.drop.over{border-color:var(--orange);background:var(--panel-2)}
+.drop svg{width:42px;height:42px;color:var(--sky)}
+.drop b{font:800 17px/1.2 var(--f-d)}
+.drop span{font-size:13.5px;color:var(--muted)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0}
+.working{display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:20px;background:var(--panel);border:1px solid var(--line)}
+.working div{display:flex;align-items:center;gap:12px;color:var(--muted)}
+.working div.on{color:var(--fg)} .working div.ok{color:var(--good)}
+.working i{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;flex:none}
+.working div.on i{border-color:var(--orange);border-top-color:transparent;animation:spin .8s linear infinite}
+.working div.ok i{background:var(--good);border-color:var(--good)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{padding:14px 16px;border-radius:14px;background:rgba(255,123,123,.12);border:1px solid rgba(255,123,123,.4);color:#ffd0d0;margin-top:14px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
+.sum div{padding:12px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+.sum b{display:block;font:900 24px/1 var(--f-d)} .sum span{font-size:12px;color:var(--muted)}
+.mode{display:grid;gap:8px;margin:0 0 18px;padding:14px;border-radius:16px;background:rgba(255,116,3,.08);border:1px solid rgba(255,116,3,.3)}
+.mode b{font:800 14px/1.2 var(--f-d)}
+.mode label{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--fg-2);cursor:pointer}
+.mode input{margin-top:3px;accent-color:var(--orange)}
+.sec{margin-top:22px}
+.sec h2{display:flex;align-items:center;gap:10px;font:800 16px/1.2 var(--f-d);margin:0 0 10px}
+.sec h2 small{font:600 12px/1 var(--f-b);color:var(--muted)}
+.item{border-radius:16px;background:var(--panel);border:1px solid var(--line);margin-bottom:8px;overflow:hidden}
+.item.off{opacity:.45}
+.item-h{display:flex;gap:12px;align-items:flex-start;padding:12px}
+.item-h .th{flex:none;width:44px;height:54px;border-radius:4px;background:#efe9dc;overflow:hidden}
+.item-h .th img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.item-h .th.none{background:var(--panel-2)}
+.item-h .tx{flex:1;min-width:0}
+.item-h b{display:block;font:700 14px/1.3 var(--f-d);overflow-wrap:anywhere}
+.item-h span{font-size:12px;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tag{padding:2px 7px;border-radius:6px;background:var(--panel-2);font:700 10.5px/1.5 var(--f-d);color:var(--fg-2)}
+.tag.ok{color:var(--good)} .tag.warn{color:#FFC24A} .tag.new{background:var(--orange);color:var(--bg)}
+.ctl{display:flex;gap:6px;flex:none}
+.ctl button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);display:grid;place-items:center}
+.ctl button svg{width:17px;height:17px}
+.ctl button[aria-pressed="true"].star{background:var(--orange);border-color:var(--orange);color:var(--bg)}
+.ctl button[aria-pressed="true"].hide{background:var(--bad);border-color:var(--bad);color:var(--bg)}
+.edit{display:grid;gap:8px;padding:0 12px 12px}
+.edit label{font:700 11px/1 var(--f-d);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.edit textarea{width:100%;min-height:90px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);resize:vertical;font-size:14px;line-height:1.5}
+.edit select{padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+.dock{position:fixed;left:0;right:0;bottom:0;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(5,10,31,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+.dock .in{max-width:820px;margin:0 auto;display:flex;gap:10px;align-items:center}
+.dock label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-2);margin-right:auto}
+.dock input{accent-color:var(--orange)}
+.b{padding:13px 18px;border-radius:14px;border:1px solid var(--line);background:var(--panel-2);font:800 14px/1 var(--f-d);white-space:nowrap}
+.b.p{background:var(--orange);border-color:var(--orange);color:var(--bg)}
+.b:disabled{opacity:.5;cursor:default}
+.done-card{padding:26px;border-radius:22px;background:var(--panel);border:1px solid rgba(94,224,160,.4);text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.done-card .ok{width:56px;height:56px;border-radius:50%;background:var(--good);display:grid;place-items:center;color:var(--bg)}
+.done-card .ok svg{width:28px;height:28px}
+.done-card h1{margin:4px 0 0}
+.done-card p{margin:0;color:var(--fg-2)}
+.done-card .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.done-card a{text-decoration:none}
+@media (max-width:520px){ .dock label span{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><img src="/logo.png" alt="Gulf"><div><b>Gulf <em>Pulse</em> · Publish</b><span>Upload the day's tracker email</span></div><a href="/" target="_blank" rel="noopener">Open bulletin</a></header>
+  <div class="steps" aria-hidden="true"><span id="s1" class="on">1 · Upload</span><span id="s2">2 · Review</span><span id="s3">3 · Publish</span></div>
+
+  <section id="v-bad" hidden><h1>This link is incomplete</h1><p class="lede">Open the full publish link you were given. It ends with <b>?key=</b> followed by a code.</p></section>
+
+  <section id="v-upload">
+    <h1>Upload today's email</h1>
+    <p class="lede">In Outlook, open the Adfactors "Gulf Oil Lubricants India News" email and use <b>File → Save As</b> to save it as a <b>.msg</b> file. Then drop it here.</p>
+    <label class="drop" id="drop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8 6 8-6"/><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M12 22v-5m0 0-2 2m2-2 2 2"/></svg>
+      <b>Drop the .msg file here</b><span>or tap to choose it</span>
+      <input type="file" id="file" accept=".msg,application/vnd.ms-outlook">
+    </label>
+    <div id="working" class="working" hidden>
+      <div id="w1"><i></i>Reading the email</div>
+      <div id="w2"><i></i>Fetching full articles and newspaper clippings</div>
+      <div id="w3"><i></i>Preparing your preview</div>
+    </div>
+    <div id="up-err" class="err" hidden></div>
+  </section>
+
+  <section id="v-review" hidden></section>
+  <section id="v-done" hidden></section>
+</div>
+<div class="dock" id="dock" hidden><div class="in">
+  <label><input type="checkbox" id="notify" checked> <span>Notify everyone</span></label>
+  <button class="b" id="preview-btn">Preview</button>
+  <button class="b p" id="publish-btn">Publish</button>
+</div></div>
+
+<script>
+(() => {
+const CFG = window.GP_CONFIG;
+const KEY = new URLSearchParams(location.search).get("key") || "";
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const I = {
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M4 4l16 16"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+  ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>'
+};
+let draft = null, current = null;
+if (!KEY){ $("#v-upload").hidden = true; $("#v-bad").hidden = false; return; }
+
+const stepTo = n => [1,2,3].forEach(i => { const e = $("#s" + i); e.className = i < n ? "done" : i === n ? "on" : ""; });
+const drop = $("#drop");
+["dragover","dragenter"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, () => drop.classList.remove("over")));
+drop.addEventListener("drop", e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) ingest(f); });
+$("#file").addEventListener("change", e => { const f = e.target.files[0]; if (f) ingest(f); e.target.value = ""; });
+
+async function ingest(file){
+  $("#up-err").hidden = true;
+  if (!/\.msg$/i.test(file.name)) return showErr("That's not a .msg file. Save the email from Outlook with File → Save As → Outlook Message Format.");
+  drop.hidden = true; $("#working").hidden = false;
+  const mark = (id, cls) => { $("#" + id).className = cls; };
+  mark("w1","on"); mark("w2",""); mark("w3","");
+  const t2 = setTimeout(() => { mark("w1","ok"); mark("w2","on"); }, 900);
+  try {
+    const r = await fetch("/api/ingest", {method:"POST", headers:{"x-upload-key":KEY, "Content-Type":"application/octet-stream"}, body:await file.arrayBuffer()});
+    const j = await r.json().catch(() => ({error:"The server didn't respond. Try again."}));
+    clearTimeout(t2);
+    if (!r.ok) throw new Error(j.error || "Upload failed.");
+    mark("w1","ok"); mark("w2","ok"); mark("w3","on");
+    draft = j; draft.leads = {};
+    current = await loadCurrent(draft.date);
+    mark("w3","ok");
+    setTimeout(renderReview, 300);
+  } catch (e){
+    clearTimeout(t2); showErr(e.message);
+  }
+}
+function showErr(msg){ $("#working").hidden = true; drop.hidden = false; const e = $("#up-err"); e.textContent = msg; e.hidden = false; }
+async function loadCurrent(date){
+  try {
+    const r = await fetch(`${CFG.supabaseUrl}/rest/v1/editions?date=eq.${date}&select=version,data`, {headers:{apikey:CFG.supabaseKey, Authorization:`Bearer ${CFG.supabaseKey}`}});
+    const rows = await r.json(); return rows[0] || null;
+  } catch(e){ return null; }
+}
+
+function renderReview(){
+  stepTo(2);
+  $("#v-upload").hidden = true; $("#v-review").hidden = false; $("#dock").hidden = false;
+  const prevKeys = new Set((current?.data.stories || []).map(s => s.key || s.url));
+  const S = draft.stories, newOnes = S.filter(s => !prevKeys.has(s.key || s.url)).length;
+  const day = new Date(draft.date + "T00:00:00").toLocaleDateString("en-IN", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+  const clips = S.filter(s => s.clips?.length).length, missing = S.filter(s => s.fetchError).length;
+  $("#v-review").innerHTML = `
+    <h1>${esc(day)}</h1>
+    <p class="lede">Check the stories below. Hide anything you don't want, star the lead story for a category, or tap the pencil to edit the crux.</p>
+    <div class="sum"><div><b>${S.length}</b><span>stories</span></div><div><b>${draft.sections.length}</b><span>categories</span></div><div><b>${clips}</b><span>clippings</span></div></div>
+    ${current ? `<div class="mode"><b>An edition for this day is already published (version ${current.version}).</b>
+      <label><input type="radio" name="mode" value="merge" checked><span><b>Add to it</b> as version ${current.version + 1}. ${newOnes} new ${newOnes === 1 ? "story" : "stories"} will be marked new; stories already published stay.</span></label>
+      <label><input type="radio" name="mode" value="replace"><span><b>Replace it</b> with exactly this email.</span></label></div>` : ""}
+    ${missing ? `<p class="lede" style="color:#FFC24A">${missing} ${missing === 1 ? "story" : "stories"} couldn't be fetched from the source site. They'll publish with the summary only.</p>` : ""}
+    ${draft.sections.map(sec => `<div class="sec"><h2>${esc(sec)} <small>${S.filter(s => s.section === sec).length}</small></h2>
+      ${S.map((s, i) => s.section !== sec ? "" : item(s, i, prevKeys)).join("")}</div>`).join("")}`;
+}
+function item(s, i, prevKeys){
+  const v = s.clips?.[0]?.src || s.image?.src;
+  const lead = draft.leads[s.section] === (s.key || s.url);
+  return `<div class="item ${s.hidden ? "off" : ""}" id="it-${i}">
+    <div class="item-h">
+      <span class="th ${v ? "" : "none"}">${v ? `<img src="${esc(v)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}</span>
+      <span class="tx"><b>${esc(s.title)}</b><span>${esc(s.outlet)}${s.page ? " · p. " + esc(s.page) : ""}${s.platform ? " · " + esc(s.platform) : ""}</span>
+        <span class="tags">${current && !prevKeys.has(s.key || s.url) ? `<span class="tag new">NEW</span>` : ""}${s.fullText ? `<span class="tag ok">Full text</span>` : ""}${s.clips?.length ? `<span class="tag ok">Clipping</span>` : ""}${s.image ? `<span class="tag ok">Photo</span>` : ""}${s.fetchError ? `<span class="tag warn">Summary only</span>` : ""}${s.alsoOn ? `<span class="tag">+ ${esc(s.alsoOn.map(a => a.label).join(", "))}</span>` : ""}</span></span>
+      <span class="ctl">
+        <button class="star" data-a="star" data-i="${i}" aria-pressed="${lead}" aria-label="Make lead story" title="Lead story">${I.star}</button>
+        <button data-a="edit" data-i="${i}" aria-label="Edit" title="Edit">${I.pen}</button>
+        <button class="hide" data-a="hide" data-i="${i}" aria-pressed="${!!s.hidden}" aria-label="${s.hidden ? "Show story" : "Hide story"}" title="Hide">${I.eye}</button>
+      </span>
+    </div>
+    <div class="edit" id="ed-${i}" hidden>
+      <label for="cx-${i}">The crux</label><textarea id="cx-${i}" data-a="crux" data-i="${i}">${esc(s.summary)}</textarea>
+      <label for="cat-${i}">Category</label><select id="cat-${i}" data-a="cat" data-i="${i}">${draft.sections.map(n => `<option ${n === s.section ? "selected" : ""}>${esc(n)}</option>`).join("")}</select>
+    </div></div>`;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-a]"); if (!b) return;
+  const i = +b.dataset.i, s = draft.stories[i];
+  if (b.dataset.a === "hide"){ s.hidden = !s.hidden; b.closest(".item").classList.toggle("off", s.hidden); b.setAttribute("aria-pressed", s.hidden); }
+  if (b.dataset.a === "star"){ const k = s.key || s.url; draft.leads[s.section] = draft.leads[s.section] === k ? undefined : k; renderReview(); }
+  if (b.dataset.a === "edit"){ const ed = $("#ed-" + i); ed.hidden = !ed.hidden; if (!ed.hidden) ed.querySelector("textarea").focus(); }
+});
+document.addEventListener("input", e => { const t = e.target; if (t.dataset.a === "crux") draft.stories[+t.dataset.i].summary = t.value; });
+document.addEventListener("change", e => { const t = e.target; if (t.dataset.a === "cat"){ draft.stories[+t.dataset.i].section = t.value; renderReview(); } });
+
+const mode = () => document.querySelector("input[name=mode]:checked")?.value || "merge";
+$("#preview-btn").addEventListener("click", () => {
+  // Build what readers will see (same rules as the server) and open the bulletin in preview mode.
+  const vis = draft.stories.filter(s => !s.hidden);
+  let stories = vis, version = (current?.version || 0) + 1;
+  const prev = current?.data.stories || [], pk = new Map(prev.map(s => [s.key || s.url, s]));
+  if (current && mode() === "merge"){ const m = new Map(prev.map(s => [s.key || s.url, s])); vis.forEach(s => m.set(s.key || s.url, s)); stories = [...m.values()]; }
+  stories = stories.map(s => ({...s, firstVersion: pk.get(s.key || s.url)?.firstVersion ?? version}));
+  const sections = [...new Set([...draft.sections, ...stories.map(s => s.section)])].filter(n => stories.some(s => s.section === n));
+  stories.sort((a, b) => sections.indexOf(a.section) - sections.indexOf(b.section));
+  const now = new Date().toISOString(), added = stories.filter(s => s.firstVersion === version).length;
+  const ed = {date:draft.date, version, publishedAt:now, sections, leads:{...(current?.data.leads || {}), ...draft.leads}, stories,
+    versions:[...(current?.data.versions || []), {version, at:now, added, total:stories.length}]};
+  try { localStorage.setItem("gp-preview", JSON.stringify(ed)); } catch(e){}
+  window.open("/?preview=1", "_blank", "noopener");
+});
+$("#publish-btn").addEventListener("click", async () => {
+  const btn = $("#publish-btn"); btn.disabled = true; btn.textContent = "Publishing…";
+  try {
+    const leads = Object.fromEntries(Object.entries(draft.leads).filter(([, v]) => v));
+    const r = await fetch("/api/publish", {method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({key:KEY, mode:mode(), notify:$("#notify").checked, draft:{...draft, leads}})});
+    const j = await r.json().catch(() => ({error:"The server didn't respond."}));
+    if (!r.ok) throw new Error(j.error || "Publishing failed.");
+    done(j);
+  } catch (e){ btn.disabled = false; btn.textContent = "Publish"; alertBox(e.message); }
+});
+function alertBox(msg){ let e = $("#pub-err"); if (!e){ e = document.createElement("div"); e.id = "pub-err"; e.className = "err"; $("#v-review").prepend(e); } e.textContent = msg; e.scrollIntoView({behavior:"smooth"}); }
+function done(j){
+  stepTo(4); $("#v-review").hidden = true; $("#dock").hidden = true; $("#v-done").hidden = false;
+  const p = j.push || {};
+  $("#v-done").innerHTML = `<div class="done-card"><span class="ok">${I.ok}</span><h1>Published</h1>
+    <p>Version ${j.version} of ${esc(new Date(j.date + "T00:00:00").toLocaleDateString("en-IN",{day:"numeric",month:"long"}))} is live: ${j.stories} stories${j.version > 1 ? `, ${j.added} new` : ""}.</p>
+    <p>${p.error ? "Notifications couldn't be sent: " + esc(p.error) : `Notification sent to ${p.sent} ${p.sent === 1 ? "device" : "devices"}.`}</p>
+    <div class="row"><a class="b p" href="/" target="_blank" rel="noopener">Open the bulletin</a><button class="b" onclick="location.reload()">Upload another version</button></div></div>`;
+}
+})();
+</script>
+</body>
+</html>

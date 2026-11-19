@@ -1,0 +1,8 @@
+{
+  "name": "gulf-pulse",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Gulf Pulse: daily media bulletin for Gulf Oil Lubricants India leadership",
+  "engines": { "node": "22.x" },
+  "dependencies": { "web-push": "3.6.7" }
+}

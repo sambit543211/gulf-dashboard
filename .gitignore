@@ -2,3 +2,5 @@
 prototype/data/
 *.msg
 __pycache__/
+node_modules/
+.vercel/
