@@ -433,21 +433,21 @@ function renderBrief(){
     return `<button class="tile" data-nav="c:${esc(n)}" style="--cc:${c.color}">
       <span class="hd">${c.icon}${esc(c.long || c.short)}<span class="n num">${l.length}</span></span>
       <p>${esc(lead.title)}</p>
-      <span class="stack">${thumbs.map(v => `<span>${img(v.src, 96)}</span>`).join("")}</span>
+      <span class="stack">${thumbs.map(v => `<span>${img(v.src, 96, "", 'loading="eager"')}</span>`).join("")}</span>
       ${nn ? `<span class="nw">${nn} NEW</span>` : ""}</button>`;
   };
   const tiles = others.map(tile);
   if (clips.length) tiles.push(`<button class="tile ${tiles.length % 2 ? "" : "wide"}" data-view="clips" style="--cc:#efe9dc">
       <span class="hd">${ICON.clip}Clippings<span class="n num">${clips.length}</span></span>
       <p>Every newspaper cut-out from today's papers</p>
-      <span class="stack">${clips.slice(0, 3).map(s => `<span>${img(s.clips[0].src, 96)}</span>`).join("")}</span></button>`);
+      <span class="stack">${clips.slice(0, 3).map(s => `<span>${img(s.clips[0].src, 96, "", 'loading="eager"')}</span>`).join("")}</span></button>`);
   $("#main").innerHTML = `<div class="view">
     ${upd}${notifyBanner()}
     <div class="greet"><h1>${esc(greet)}.</h1><span>${fmt(st.date,{weekday:"short",day:"numeric",month:"long"})}</span></div>
     <div class="brief-grid">
       <section aria-label="Gulf in the news">
         ${gulf.length ? `<div class="spot"><div class="spot-row" id="spot-row">${gulf.map((s, i) => { const v = visual(s); return `
-          <button class="spot-card" data-open="${esc(GULF)}" data-i="${i}">${v ? img(v.src, 640) : ""}
+          <button class="spot-card" data-open="${esc(GULF)}" data-i="${i}">${v ? img(v.src, 640, "", i ? "" : 'loading="eager" fetchpriority="high"') : ""}
             ${isNew(s) ? `<span class="nw">NEW</span>` : ""}
             <span class="tx"><span class="flag">Gulf in the news${gulf.length > 1 ? ` · ${i + 1}/${gulf.length}` : ""}</span><h3>${esc(s.title)}</h3><span class="meta">${esc(s.outlet)}${s.platform ? " · " + esc(s.platform) : ""}</span></span></button>`; }).join("")}</div>
           ${gulf.length > 1 ? `<div class="dots" id="dots">${gulf.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>` : ""}</div>`
@@ -478,7 +478,7 @@ function renderCat(){
   const kick = s => `<span class="kick">${esc(s.outlet)}${s.edition ? ` <em>· ${esc(s.edition.split(",")[0])}</em>` : ""}${s.page ? ` <em>· ${pages(s.page)}</em>` : ""}${!s.page && s.kind !== "print" ? ` <em>· ${KIND[s.kind]}${s.platform ? " · " + esc(s.platform) : ""}</em>` : ""}</span>`;
   $("#main").innerHTML = `<div class="view" style="--cc:${c.color}">
     <div class="cat-h"><span class="sw"></span><h1>${esc(c.long || (n === GULF ? "Gulf in the news" : c.short))}</h1><span class="num">${l.length} ${l.length === 1 ? "story" : "stories"}</span></div>
-    <button class="lead ${lv?.paper ? "paper" : ""} ${isRead(lead) ? "read" : ""}" data-open="${esc(n)}" data-i="0">${lv ? img(lv.src, 1080) : ""}
+    <button class="lead ${lv?.paper ? "paper" : ""} ${isRead(lead) ? "read" : ""}" data-open="${esc(n)}" data-i="0">${lv ? img(lv.src, 1080, "", 'loading="eager"') : ""}
       ${isNew(lead) ? `<span class="nw">NEW</span>` : ""}
       <span class="tx">${kick(lead)}<h2>${esc(lead.title)}</h2></span></button>
     <div class="rows">${rest.map((s, i) => { const v = visual(s); return `

@@ -259,7 +259,14 @@ $("#publish-btn").addEventListener("click", async () => {
   } catch (e){ btn.disabled = false; btn.textContent = "Publish"; alertBox(e.message); }
 });
 function alertBox(msg){ let e = $("#pub-err"); if (!e){ e = document.createElement("div"); e.id = "pub-err"; e.className = "err"; $("#v-review").prepend(e); } e.textContent = msg; e.scrollIntoView({behavior:"smooth"}); }
+function warmImages(){
+  // Ask the image optimiser for every size readers will load, so their first open is instant.
+  const sizes = {96:[], 256:[], 640:[], 1080:[]};
+  draft.stories.filter(s => !s.hidden).forEach(s => { const v = s.clips?.[0]?.src || s.image?.src; if (v){ sizes[96].push(v); sizes[256].push(v); sizes[1080].push(v); if (s.image) sizes[640].push(v); } });
+  Object.entries(sizes).forEach(([w, l]) => l.forEach(src => { const i = new Image(); i.src = `/_vercel/image?url=${encodeURIComponent(src)}&w=${w}&q=70`; }));
+}
 function done(j){
+  warmImages();
   stepTo(4); $("#v-review").hidden = true; $("#dock").hidden = true; $("#v-done").hidden = false;
   const p = j.push || {};
   $("#v-done").innerHTML = `<div class="done-card"><span class="ok">${I.ok}</span><h1>Published</h1>
