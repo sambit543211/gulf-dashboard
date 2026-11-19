@@ -7,7 +7,7 @@ from the media-tracker email that Adfactors PR sends every morning.
 
 | Path | What it is |
 |------|------------|
-| `prototype/index.html` | Design prototype: Today, Clippings and Archive views, with a story sheet that has Summary, Full story and Clipping tabs |
+| `prototype/index.html` | Design prototype: dark, immersive feed with category tabs, full-screen stories (crux, then full story, then clipping) and an edition picker |
 | `tools/ingest/ingest_msg.py` | Turns one tracker `.msg` email into an edition JSON. It also fetches each print story's full text and newspaper clipping from the media-tracker link. |
 
 ## Run the prototype locally
