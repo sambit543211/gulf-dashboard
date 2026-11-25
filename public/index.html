@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>Gulf Pulse</title>
 <meta name="description" content="Daily media brief for Gulf Oil Lubricants India.">
-<meta name="theme-color" content="#060A1A" id="meta-theme">
+<meta name="theme-color" content="#F5F7FC" id="meta-theme">
 <meta name="robots" content="noindex">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -16,9 +16,9 @@
 <link rel="icon" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script>
-/* Pick the theme before first paint (saved choice, else the phone's setting). */
+/* Pick the theme before first paint: light by default, dark only if the reader chose it. */
 (function(){var t=null;try{t=JSON.parse(localStorage.getItem("gp-theme"));}catch(e){}
-var m=t||(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");
+var m=t==="dark"?"dark":"light";
 document.documentElement.dataset.theme=m;})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
