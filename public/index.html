@@ -101,7 +101,7 @@ img.fx{opacity:0;transition:opacity .5s var(--ease)} img.fx.ld{opacity:1}
 .bar .logo{width:30px;height:auto;flex:none}
 .brand{font:800 16px/1 var(--f-d);letter-spacing:-.01em;color:var(--hi);white-space:nowrap;margin-right:auto}
 .brand em{font-style:normal;color:var(--accent)}
-.ed-pill{display:flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 11px;border-radius:12px;background:var(--s2);border:1px solid var(--line);text-align:left;transition:background .2s,transform .15s var(--ease)}
+.ed-pill{display:flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 11px;border-radius:12px;background:var(--s2);border:1px solid transparent;text-align:left;transition:background .2s,transform .15s var(--ease)}
 .ed-pill:active{transform:scale(.96)}
 .ed-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;box-shadow:0 0 0 3px var(--accent-soft)}
 .ed-pill .dot.past{background:var(--muted);box-shadow:none}
@@ -109,7 +109,7 @@ img.fx{opacity:0;transition:opacity .5s var(--ease)} img.fx.ld{opacity:1}
 .ed-pill small{font:700 8.5px/1 var(--f-d);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .ed-pill b{font:700 12.5px/1 var(--f-d);color:var(--hi);white-space:nowrap}
 .ed-pill svg{width:14px;height:14px;color:var(--muted)}
-.icon-btn{position:relative;width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:var(--s2);border:1px solid var(--line);color:var(--fg);transition:transform .15s var(--ease)}
+.icon-btn{position:relative;width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:var(--s2);border:1px solid transparent;color:var(--fg);transition:transform .15s var(--ease)}
 .icon-btn:active{transform:scale(.92)}
 .icon-btn svg{width:19px;height:19px}
 .icon-btn.on{color:var(--accent)}
@@ -222,6 +222,21 @@ html.vt-theme::view-transition-new(root){animation:themeIn .6s var(--ease)}
 .thumb.none{display:grid;place-items:center;color:var(--muted);background:var(--s2)}
 .thumb.none svg{width:22px;height:22px}
 
+/* Clippings in full: true shape, no cropping */
+.cfeed{display:grid;gap:26px}
+.cf{display:flex;flex-direction:column;gap:12px;width:100%;text-align:left}
+.cf .cap{display:flex;flex-direction:column;gap:6px;padding:0 2px}
+.cf b{font:600 17px/1.28 var(--f-s);color:var(--hi)}
+.cf .paper{position:relative;display:block;border-radius:6px;overflow:hidden;background:var(--paper);box-shadow:0 26px 44px -28px rgba(0,0,0,.85),0 0 0 1px var(--line);transition:transform .25s var(--ease)}
+.cf .paper img{width:100%;height:auto;min-height:220px}
+.cf .paper img.ld{min-height:0}
+.cf:active .paper{transform:scale(.985)}
+.cf .zoom{position:absolute;right:10px;bottom:10px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(6,10,26,.62);color:#fff;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.cf .zoom svg{width:17px;height:17px}
+.showall{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:50px;margin-top:18px;border-radius:14px;background:var(--s1);border:1px solid var(--line);font:700 13.5px/1 var(--f-d);color:var(--fg)}
+.showall svg{width:16px;height:16px}
+.showall:active{background:var(--s2)}
+@media (min-width:900px){ .cfeed{grid-template-columns:1fr 1fr;align-items:start;gap:28px 24px} }
 /* Today's clippings: large carousel */
 .ccar{gap:14px}
 .cc{flex:0 0 min(76%,330px);scroll-snap-align:center;display:flex;flex-direction:column;gap:12px;text-align:left}
@@ -342,7 +357,7 @@ html.vt-theme::view-transition-new(root){animation:themeIn .6s var(--ease)}
 .meta i{font-style:normal;color:var(--muted)}
 .links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:-4px}
 .links a{font:700 13px/1.3 var(--f-d);color:var(--c-infra);text-decoration:none}
-.crux{position:relative;padding:17px 17px 17px 20px;border-radius:18px;background:linear-gradient(135deg,var(--accent-soft),transparent 75%),var(--s1);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line))}
+.crux{position:relative;padding:17px 17px 17px 20px;border-radius:18px;background:linear-gradient(135deg,var(--accent-soft),transparent 70%),var(--s1);border:1px solid var(--line)}
 .crux::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--accent)}
 .crux .lab{font:800 10.5px/1 var(--f-d);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
 .crux p{margin:9px 0 0;font:500 calc(19px * var(--ts,1))/1.5 var(--f-s);color:var(--hi)}
@@ -558,6 +573,7 @@ const ICON = {
   swipe: svg('<path d="M15 6l-6 6 6 6"/><path d="M9 6l6 6-6 6" opacity=".35"/>'),
   sun: svg('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
   moon: svg('<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'),
+  zoom: svg('<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2M11 8v6M8 11h6"/>'),
   help: svg('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/>')
 };
 function catInfo(name){
@@ -593,6 +609,9 @@ document.addEventListener("error", e => { const t = e.target; if (t.tagName !== 
 document.addEventListener("load", e => { if (e.target.tagName === "IMG") e.target.classList.add("ld"); }, true);
 const settleImgs = root => root.querySelectorAll("img.fx").forEach(i => { if (i.complete && i.naturalWidth) i.classList.add("ld"); });
 const visual = s => (s.clips && s.clips[0] && {src:s.clips[0].src, paper:true}) || (s.image && {src:s.image.src, paper:false}) || null;
+const clipItem = (s, k, hide) => { const c = catInfo(s.section); return `<button class="cf rise" style="--i:${Math.min(k, 6)}" data-clip="${esc(s.key || s.id)}" ${hide ? "hidden" : ""}>
+  <span class="cap"><span class="kick"><span class="c" style="--cc:${c.color}">${esc(c.short)}</span><span>${esc(s.outlet)}${s.page ? " · " + pages(s.page) : ""}</span></span></span>
+  <span class="paper">${img(s.clips[0].src, 1080, "Newspaper clipping: " + s.title, k < 2 ? 'loading="eager"' : "")}<span class="zoom" aria-hidden="true">${ICON.zoom}</span></span></button>`; };
 const thumbHTML = (s, w = 192) => { const v = visual(s); return v ? `<span class="thumb ${v.paper ? "paper" : ""}">${img(v.src, w)}</span>` : `<span class="thumb none">${catInfo(s.section).icon}</span>`; };
 
 const st = {index:[], ed:null, date:null, view:"brief", cat:null, preview:false, story:null};
@@ -693,10 +712,11 @@ function renderBrief(){
           <span class="t"><h3>${esc(s.title)}</h3><span class="m">${esc(s.outlet)} · ${readMins(s)} min${isNew(s) ? ` <span class="nwt">New</span>` : isRead(s) ? ` · Read` : ""}</span></span>
           ${thumbHTML(s)}
         </button></div>`; }).join("");
+  const SHOW = 3;
   const clipHTML = clips.length ? `
-      <div class="sh"><h2>Today's clippings</h2><span class="cnt num">${clips.length}</span><button class="more" data-view="clips">View all${ICON.next}</button></div>
-      <div class="hrow ccar" id="ccar">${clips.map((s, k) => `<button class="cc" data-clip="${esc(s.key || s.id)}"><span class="pp">${img(s.clips[0].src, 640, "Clipping: " + s.title, k < 2 ? 'loading="eager"' : "")}</span><span class="cap"><span class="kick"><span class="c" style="--cc:${catInfo(s.section).color}">${esc(catInfo(s.section).short)}</span><span>${esc(s.outlet)}${s.page ? " · " + pages(s.page) : ""}</span></span><b>${esc(s.title)}</b></span></button>`).join("")}</div>
-      ${clips.length > 1 ? `<div class="cdots" id="cdots">${clips.map((_, k) => `<i class="${k ? "" : "on"}"></i>`).join("")}</div>` : ""}` : "";
+      <div class="sh"><h2>Today's clippings</h2><span class="cnt num">${clips.length}</span>${clips.length > SHOW ? `<button class="more" data-view="clips">View all${ICON.next}</button>` : ""}</div>
+      <div class="cfeed" id="cfeed">${clips.map((s, k) => clipItem(s, k, k >= SHOW)).join("")}</div>
+      ${clips.length > SHOW ? `<button class="showall" data-act="more-clips">Show all ${clips.length} clippings${ICON.down}</button>` : ""}` : "";
   setPage(`
     <div class="mast">
       <div class="tx"><div class="eb">${esc(greet)}</div><h1>${esc(title)}</h1><div class="sub">${ed.stories.length} stories · ${outlets} outlets${latest && !st.preview ? " · " + timeIST(ed.publishedAt || Date.now()) : ""}</div></div>
@@ -709,16 +729,11 @@ function renderBrief(){
         ${gulfHTML}
       </section>
       <section aria-label="Top stories">
-        ${others.length ? `<div class="sh"><h2>Top stories</h2><span class="cnt">by sector</span></div><div class="tops rise" style="--i:${i++}">${tops}</div>` : ""}
+        ${others.length ? `<div class="sh"><h2>Top stories</h2></div><div class="tops rise" style="--i:${i++}">${tops}</div>` : ""}
       </section>
     </div>
     ${clipHTML}
     <div class="endnote"><img src="/logo.png" alt="">${latest ? "That's today's brief." : "End of this edition."}</div>`, "f");
-  const car = $("#ccar"), dots = $("#cdots");
-  if (car && dots){
-    const sync = () => { const w = car.firstElementChild.offsetWidth + 14, k = Math.round(car.scrollLeft / w); [...dots.children].forEach((d, j) => d.classList.toggle("on", j === k)); };
-    car.addEventListener("scroll", sync, {passive:true});
-  }
 }
 
 /* ---------- category ---------- */
@@ -738,7 +753,7 @@ function renderCat(dir){
       ${nextSec ? `<button class="pg nx" data-nav="c:${esc(nextSec)}" style="--nc:${catInfo(nextSec).color}"><small>Next${ICON.next}</small><b>${esc(catInfo(nextSec).long)}</b></button>`
         : `<button class="pg nx" data-nav="brief"><small>All sectors read${ICON.next}</small><b>Back to home</b></button>`}
     </div>
-    <div class="swipe-hint">${ICON.swipe}Swipe sideways to change sector</div>
+    ${store.get("gp-swiped") ? "" : `<div class="swipe-hint">${ICON.swipe}Swipe sideways to change sector</div>`}
   </div>`, dir > 0 ? "r" : dir < 0 ? "l" : "f");
 }
 
@@ -746,7 +761,7 @@ function renderCat(dir){
 function renderClips(){
   const l = st.ed.stories.filter(s => s.clips?.length);
   setPage(`<div class="cat-h" style="--cc:var(--c-infra)"><span class="ic">${ICON.clip}</span><h1>Clippings</h1><span class="num">${l.length} cut-outs</span></div>
-    <div class="wall">${l.map(s => `<button class="clip" data-clip="${esc(s.key || s.id)}"><span class="pp" style="display:block">${img(s.clips[0].src, 640, "Clipping: " + s.title)}</span><span>${esc(s.outlet)}${s.page ? " · " + pages(s.page) : ""}</span></button>`).join("")}</div>`, "f");
+    <div class="cfeed">${l.map((s, k) => clipItem(s, k, false)).join("")}</div>`, "f");
 }
 
 function setPage(html, anim){
@@ -1191,6 +1206,7 @@ document.addEventListener("click", async e => {
       store.set("gp-read-any", true);
       for (const n of secs()){ const k = ordered(n).findIndex(s => !isRead(s)); if (k >= 0) return openStory(n, k); }
       return openStory(secs()[0], 0);
+    case "more-clips": document.querySelectorAll("#cfeed .cf[hidden]").forEach((n, k) => { n.hidden = false; n.style.setProperty("--i", k); n.classList.remove("rise"); void n.offsetWidth; n.classList.add("rise"); }); settleImgs($("#cfeed")); t.remove(); return;
     case "read-new": for (const n of secs()){ const k = ordered(n).findIndex(isNew); if (k >= 0) return openStory(n, k); } return;
     case "close": return closeStory();
     case "jump": return jump(+t.dataset.k);
@@ -1223,7 +1239,7 @@ document.addEventListener("keydown", e => {
 
 /* ---------- thumb gestures ---------- */
 const drag = {on:false, consumed:false};
-function swipeCat(d){ const order = secs(), i = order.indexOf(st.cat) + d; if (i >= 0 && i < order.length) go("cat", order[i], {dir:d}); else if (d < 0) go("brief"); }
+function swipeCat(d){ store.set("gp-swiped", true); const order = secs(), i = order.indexOf(st.cat) + d; if (i >= 0 && i < order.length) go("cat", order[i], {dir:d}); else if (d < 0) go("brief"); }
 document.addEventListener("touchstart", e => {
   if (e.touches.length !== 1 || $(".lightbox") || $(".sheet") || $(".tour")) { drag.on = false; return; }
   const t = e.touches[0], story = $("#story"), tgt = e.target;
