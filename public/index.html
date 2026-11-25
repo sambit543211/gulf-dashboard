@@ -222,6 +222,17 @@ html.vt-theme::view-transition-new(root){animation:themeIn .6s var(--ease)}
 .thumb.none{display:grid;place-items:center;color:var(--muted);background:var(--s2)}
 .thumb.none svg{width:22px;height:22px}
 
+/* Today's clippings: large carousel */
+.ccar{gap:14px}
+.cc{flex:0 0 min(76%,330px);scroll-snap-align:center;display:flex;flex-direction:column;gap:12px;text-align:left}
+.cc .pp{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--paper);box-shadow:0 22px 40px -24px rgba(0,0,0,.85),0 0 0 1px var(--line);transition:transform .3s var(--ease)}
+.cc .pp img{width:100%;height:100%;object-fit:cover;object-position:top}
+.cc:active .pp{transform:scale(.98)}
+.cc .cap{display:flex;flex-direction:column;gap:6px;padding:0 2px}
+.cc b{font:600 16px/1.28 var(--f-s);color:var(--hi);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cdots{display:flex;gap:5px;justify-content:center;margin-top:12px;flex-wrap:wrap;padding:0 30px}
+.cdots i{width:6px;height:6px;border-radius:3px;background:var(--line-2);transition:all .3s var(--ease)}
+.cdots i.on{width:18px;background:var(--accent)}
 /* Today's clippings strip */
 .cs{flex:0 0 auto;display:flex;flex-direction:column;gap:8px;width:116px;scroll-snap-align:start;text-align:left}
 .cs .pp{height:148px;border-radius:5px;overflow:hidden;background:var(--paper);box-shadow:0 14px 24px -16px rgba(0,0,0,.8);transform:rotate(var(--r,0deg));transition:transform .3s var(--spring)}
@@ -267,6 +278,23 @@ html.vt-theme::view-transition-new(root){animation:themeIn .6s var(--ease)}
 .swipe-hint{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;font-size:11.5px;color:var(--muted)}
 .swipe-hint svg{width:14px;height:14px}
 
+/* sector story cards: headline + small image, the crux readable in place */
+.scs{display:grid;gap:12px}
+.sc{display:flex;flex-direction:column;gap:11px;width:100%;padding:15px 15px 13px;border-radius:20px;background:var(--s1);border:1px solid var(--line);box-shadow:var(--card-shadow);text-align:left;transition:transform .2s var(--ease)}
+.sc:active{transform:scale(.985)}
+.sc-h{display:flex;gap:14px;align-items:flex-start}
+.sc-h .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sc h3{margin:0;font:600 18px/1.25 var(--f-s);color:var(--hi);letter-spacing:-.005em;overflow-wrap:anywhere}
+.sc .thumb{width:64px;height:76px}
+.sc .cx{display:block;font:400 15px/1.55 var(--f-b);color:var(--fg-2)}
+.sc .cx mark{color:var(--hi)}
+.sc-f{display:flex;align-items:center;gap:5px;padding-top:10px;border-top:1px solid var(--line);font:600 11.5px/1 var(--f-d);color:var(--muted)}
+.sc-f svg{width:13px;height:13px}
+.sc-f em{margin-left:auto;display:flex;align-items:center;gap:2px;font-style:normal;font-weight:700;color:var(--cc,var(--accent))}
+.sc.read h3{color:var(--fg-2)}
+.sc.read .thumb{opacity:.6}
+@media (min-width:900px){ .scs{grid-template-columns:1fr 1fr;align-items:start} }
+
 /* clippings wall */
 .wall{columns:2 150px;column-gap:12px}
 .clip{break-inside:avoid;display:block;width:100%;margin:0 0 14px;text-align:left}
@@ -306,7 +334,9 @@ html.vt-theme::view-transition-new(root){animation:themeIn .6s var(--ease)}
 .st-hero .gen svg{width:72px;height:72px}
 .st-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:120px;background:linear-gradient(rgba(0,0,0,.45),transparent);pointer-events:none}
 @keyframes kb{from{transform:scale(1.1)}}
-.st-body{max-width:700px;margin:0 auto;padding-top:20px;display:flex;flex-direction:column;gap:14px}
+.st-scroll{overflow-x:hidden}
+.st-body{position:relative;z-index:1;background:var(--bg);max-width:700px;margin:0 auto;padding-top:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.crux p,.full .in,.sc .cx,.ts-b h3,.row h3{overflow-wrap:anywhere;word-break:break-word}
 .st-body h1{margin:0;font:600 calc(clamp(26px,7vw,36px) * var(--ts,1))/1.13 var(--f-s);letter-spacing:-.01em;color:var(--hi);text-wrap:balance;overflow-wrap:anywhere}
 .meta{display:flex;flex-wrap:wrap;gap:3px 7px;font-size:13px;color:var(--fg-2)}
 .meta i{font-style:normal;color:var(--muted)}
@@ -323,9 +353,10 @@ mark{background:color-mix(in srgb,var(--accent) 28%,transparent);color:inherit;b
 .full .in p{margin:0 0 15px}
 .full .in p:first-child::first-letter{font:600 3.1em/.82 var(--f-s);color:var(--cc);float:left;margin:4px 8px 0 0}
 .act{position:absolute;z-index:3;left:0;right:0;bottom:0;display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:8px;padding:10px max(12px,env(safe-area-inset-right,0px)) calc(10px + var(--bot)) max(12px,env(safe-area-inset-left,0px));background:var(--glass-2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.act a{display:flex;align-items:center;justify-content:center;gap:7px;height:48px;border-radius:14px;font:700 13px/1 var(--f-d);white-space:nowrap;text-decoration:none}
 .act button{display:flex;align-items:center;justify-content:center;gap:7px;height:48px;border-radius:14px;background:var(--s2);border:1px solid var(--line);color:var(--fg);font:700 13px/1 var(--f-d);white-space:nowrap;transition:transform .15s var(--ease)}
 .act button:active{transform:scale(.96)}
-.act .p{background:var(--btn-hi-bg);color:var(--btn-hi-fg);border-color:transparent}
+.act a.p,.act .p{background:var(--btn-hi-bg);color:var(--btn-hi-fg);border-color:transparent}
 .act svg{width:16px;height:16px;flex:none}
 .act button:disabled{opacity:.35}
 .edge-hint{position:absolute;z-index:2;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:50%;display:grid;place-items:center;background:var(--s2);border:1px solid var(--line-2);color:var(--fg);opacity:0;pointer-events:none}
@@ -519,6 +550,7 @@ const ICON = {
   next: svg('<path d="m9 6 6 6-6 6"/>', 'stroke-width="2.4"'),
   arrow: svg('<path d="M5 12h14M13 6l6 6-6 6"/>', 'stroke-width="2.4"'),
   share: svg('<path d="M12 15V3M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/>'),
+  out: svg('<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>', 'stroke-width="2.2"'),
   read: svg('<path d="M4 5h13a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2z"/><path d="M8 9h7M8 13h7"/>'),
   bell: svg('<path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>'),
   check: svg('<path d="m5 12 5 5 9-10"/>', 'stroke-width="2.6"'),
@@ -549,7 +581,9 @@ const timeIST = t => new Date(t).toLocaleTimeString("en-IN", {hour:"numeric", mi
 const pages = p => p ? (/,/.test(p) ? "pp. " + p : "p. " + p) : "";
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const smooth = reduce ? "auto" : "smooth";
-const hl = t => esc(t).replace(/(gulf oil|gulf[’']s|dhoni)/gi, "<mark>$1</mark>");
+const clean = t => String(t || "").replace(/<\s*https?:\/\/[^>]*>/g, " ").replace(/https?:\/\/\S+/g, " ").replace(/\s+\|\s+/g, " · ").replace(/[ \t]{2,}/g, " ").replace(/^[\s·|]+/, "").trim();
+const cruxOf = s => clean(s.summary);
+const hl = t => esc(clean(t)).replace(/(gulf oil|gulf[’']s|dhoni)/gi, "<mark>$1</mark>");
 const store = {get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const buzz = (ms = 8) => { try { navigator.vibrate && navigator.vibrate(ms); } catch(e){} };
 const PROXY = !/^(localhost|127\.|$)/.test(location.hostname);
@@ -661,7 +695,8 @@ function renderBrief(){
         </button></div>`; }).join("");
   const clipHTML = clips.length ? `
       <div class="sh"><h2>Today's clippings</h2><span class="cnt num">${clips.length}</span><button class="more" data-view="clips">View all${ICON.next}</button></div>
-      <div class="hrow">${clips.slice(0, 12).map((s, k) => `<button class="cs" data-clip="${esc(s.key || s.id)}" style="--r:${[-2, 1.5, -1, 2, -1.5][k % 5]}deg"><span class="pp">${img(s.clips[0].src, 256)}</span><span>${esc(s.outlet)}</span></button>`).join("")}</div>` : "";
+      <div class="hrow ccar" id="ccar">${clips.map((s, k) => `<button class="cc" data-clip="${esc(s.key || s.id)}"><span class="pp">${img(s.clips[0].src, 640, "Clipping: " + s.title, k < 2 ? 'loading="eager"' : "")}</span><span class="cap"><span class="kick"><span class="c" style="--cc:${catInfo(s.section).color}">${esc(catInfo(s.section).short)}</span><span>${esc(s.outlet)}${s.page ? " · " + pages(s.page) : ""}</span></span><b>${esc(s.title)}</b></span></button>`).join("")}</div>
+      ${clips.length > 1 ? `<div class="cdots" id="cdots">${clips.map((_, k) => `<i class="${k ? "" : "on"}"></i>`).join("")}</div>` : ""}` : "";
   setPage(`
     <div class="mast">
       <div class="tx"><div class="eb">${esc(greet)}</div><h1>${esc(title)}</h1><div class="sub">${ed.stories.length} stories · ${outlets} outlets${latest && !st.preview ? " · " + timeIST(ed.publishedAt || Date.now()) : ""}</div></div>
@@ -679,23 +714,25 @@ function renderBrief(){
     </div>
     ${clipHTML}
     <div class="endnote"><img src="/logo.png" alt="">${latest ? "That's today's brief." : "End of this edition."}</div>`, "f");
+  const car = $("#ccar"), dots = $("#cdots");
+  if (car && dots){
+    const sync = () => { const w = car.firstElementChild.offsetWidth + 14, k = Math.round(car.scrollLeft / w); [...dots.children].forEach((d, j) => d.classList.toggle("on", j === k)); };
+    car.addEventListener("scroll", sync, {passive:true});
+  }
 }
 
 /* ---------- category ---------- */
 function renderCat(dir){
-  const n = st.cat, c = catInfo(n), list = ordered(n), lead = list[0], rest = list.slice(1);
+  const n = st.cat, c = catInfo(n), list = ordered(n);
   const k = secs().indexOf(n), nextSec = secs()[k + 1], prevSec = secs()[k - 1];
-  const lv = visual(lead);
-  const meta = s => `${esc(s.outlet)}${s.edition ? " · " + esc(s.edition.split(",")[0]) : ""}${s.page ? " · " + pages(s.page) : ""}`;
   setPage(`<div style="--cc:${c.color}">
     <div class="cat-h"><span class="ic">${c.icon}</span><h1>${esc(c.long)}</h1><span class="num">${list.length} ${list.length === 1 ? "story" : "stories"}</span></div>
-    <button class="lead rise ${isRead(lead) ? "read" : ""}" data-open="${esc(n)}" data-i="0" data-skey="${esc(lead.key || lead.id)}">
-      ${lv ? `<span class="im ${lv.paper ? "paper" : ""}">${img(lv.src, 1080, "", 'loading="eager"')}</span>` : ""}
-      <span class="tx"><span class="kick"><span class="c">${esc(lead.outlet)}</span>${isNew(lead) ? `<span class="nwt">New</span>` : ""}</span><h2>${esc(lead.title)}</h2><span class="m">${meta(lead).replace(esc(lead.outlet) + " · ", "")}${lead.page || lead.edition ? " · " : ""}${readMins(lead)} min read</span></span></button>
-    <div class="rows">${rest.map((s, j) => { const r = isRead(s); return `
-      <button class="row rise ${r ? "read" : ""}" style="--i:${Math.min(j + 1, 9)}" data-open="${esc(n)}" data-i="${j + 1}" data-skey="${esc(s.key || s.id)}">
-        <span class="t"><span class="kick"><span class="c">${esc(s.outlet)}</span>${s.page ? `<span>${pages(s.page)}</span>` : s.kind !== "print" ? `<span>${KIND[s.kind]}${s.platform ? " · " + esc(s.platform) : ""}</span>` : ""}</span><h3>${esc(s.title)}</h3><span class="m">${isNew(s) ? `<span class="nwt">New</span>` : r ? `${ICON.check}Read` : readMins(s) + " min read"}</span></span>
-        ${thumbHTML(s)}</button>`; }).join("")}</div>
+    <div class="scs">${list.map((s, j) => { const r = isRead(s); return `
+      <button class="sc rise ${r ? "read" : ""}" style="--i:${Math.min(j, 8)}" data-open="${esc(n)}" data-i="${j}" data-skey="${esc(s.key || s.id)}">
+        <span class="sc-h"><span class="t"><span class="kick"><span class="c">${esc(s.outlet)}</span>${s.page ? `<span>${pages(s.page)}</span>` : s.kind !== "print" ? `<span>${KIND[s.kind]}${s.platform ? " · " + esc(s.platform) : ""}</span>` : ""}${isNew(s) ? `<span class="nwt">New</span>` : ""}</span><h3>${esc(s.title)}</h3></span>${thumbHTML(s)}</span>
+        <span class="cx">${hl(s.summary)}</span>
+        <span class="sc-f">${r ? `${ICON.check}Read · ` : ""}${readMins(s)} min read<em>${s.fullText ? "Full story" : "Open"}${ICON.next}</em></span>
+      </button>`; }).join("")}</div>
     <div class="pager2 ${prevSec ? "" : "one"}">
       ${prevSec ? `<button class="pg pv" data-nav="c:${esc(prevSec)}" style="--nc:${catInfo(prevSec).color}"><small>${ICON.prev}Previous</small><b>${esc(catInfo(prevSec).long)}</b></button>` : ""}
       ${nextSec ? `<button class="pg nx" data-nav="c:${esc(nextSec)}" style="--nc:${catInfo(nextSec).color}"><small>Next${ICON.next}</small><b>${esc(catInfo(nextSec).long)}</b></button>`
@@ -821,7 +858,7 @@ function storyPageHTML(){
       </div>
     </div>
     <div class="act">
-      <button class="p" data-act="full" ${paras.length ? "" : "disabled"} aria-expanded="false">${ICON.read}<span>Full story</span></button>
+      ${paras.length ? `<button class="p" data-act="full" aria-expanded="false">${ICON.read}<span>Full story</span></button>` : `<a class="p" href="${esc(s.url)}" target="_blank" rel="noopener">${ICON.out}<span>${s.kind === "print" ? "Source" : esc(s.platform || "Source")}</span></a>`}
       <button data-act="clip" ${media.length ? "" : "disabled"}>${ICON.clip}<span>${s.clips?.length ? "Clipping" : "Image"}</span></button>
       <button data-act="share">${ICON.share}<span>Share</span></button>
     </div>
@@ -923,7 +960,7 @@ function closeStory(fromPop, how){
 }
 async function shareStory(){
   const s = ordered(st.story.sec)[st.story.i];
-  const text = `${s.title}\n${[s.outlet, pages(s.page), fmt(s.date || st.date, {day:"numeric", month:"short"})].filter(Boolean).join(" · ")}\n\n${s.summary}`;
+  const text = `${s.title}\n${[s.outlet, pages(s.page), fmt(s.date || st.date, {day:"numeric", month:"short"})].filter(Boolean).join(" · ")}\n\n${cruxOf(s)}`;
   try { if (navigator.share){ await navigator.share({title:s.title, text, url:s.url}); return; } }
   catch (e){ if (e.name === "AbortError") return; }
   try { await navigator.clipboard.writeText(text + "\n\n" + s.url); toast("Copied. Paste it into WhatsApp or email."); }

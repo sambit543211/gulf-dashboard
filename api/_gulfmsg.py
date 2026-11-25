@@ -51,6 +51,15 @@ def _meta(line):
     return meta
 
 
+def clean_text(t):
+    """Social-post summaries arrive with Outlook SafeLinks inside (<https://...>); keep only the words."""
+    t = re.sub(r"<\s*https?://[^>]*>", " ", t or "")
+    t = re.sub(r"https?://\S+", " ", t)
+    t = re.sub(r"\s+\|\s+", " · ", t)
+    t = re.sub(r"[ \t]{2,}", " ", t)
+    return re.sub(r"^[\s·|]+", "", t).strip()
+
+
 def _slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:48]
 
@@ -86,7 +95,7 @@ def parse_msg(data: bytes):
                 summary = l.split(":", 1)[1].strip()
             elif summary and not l.startswith(("Regards", "Saniya", "Adfactors")):
                 summary += " " + l
-        summary = summary.split("Regards")[0].strip()
+        summary = clean_text(summary.split("Regards")[0])
         platform = meta.get("Social Media Platform")
         stories.append({
             "id": f"{len(stories) + 1:02d}-{_slug(title)}",
