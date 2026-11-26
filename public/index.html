@@ -377,6 +377,14 @@ mark{background:color-mix(in srgb,var(--accent) 28%,transparent);color:inherit;b
 .edge-hint{position:absolute;z-index:2;top:50%;width:44px;height:44px;margin-top:-22px;border-radius:50%;display:grid;place-items:center;background:var(--s2);border:1px solid var(--line-2);color:var(--fg);opacity:0;pointer-events:none}
 .edge-hint svg{width:20px;height:20px}
 .edge-hint.l{left:10px} .edge-hint.r{right:10px}
+/* Tap arrows: small, always within thumb reach, fade back while reading/scrolling */
+.tap-nav{position:absolute;z-index:4;top:58%;width:36px;height:56px;margin-top:-28px;display:grid;place-items:center;background:var(--glass-2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);color:var(--hi);box-shadow:0 8px 20px -10px rgba(0,0,0,.45);transition:opacity .35s,transform .15s var(--ease),background .2s}
+.tap-nav svg{width:18px;height:18px}
+.tap-nav.l{left:0;border-left:0;border-radius:0 14px 14px 0}
+.tap-nav.r{right:0;border-right:0;border-radius:14px 0 0 14px}
+.tap-nav:active{transform:scale(.92);background:var(--accent);color:var(--on-accent)}
+.st-page.reading .tap-nav{opacity:.28}
+@media (min-width:900px){ .tap-nav{width:44px;height:64px;margin-top:-32px} .tap-nav:hover{opacity:1;background:var(--s2)} }
 
 /* section hand-off and finish */
 .inter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:calc(40px + var(--top)) 28px calc(40px + var(--bot));text-align:center;background:radial-gradient(90% 60% at 50% 35%,color-mix(in srgb,var(--cc) 18%,transparent),transparent 70%),var(--bg)}
@@ -415,7 +423,10 @@ mark{background:color-mix(in srgb,var(--accent) 28%,transparent);color:inherit;b
 .lb-top{position:relative;z-index:2;display:flex;align-items:center;gap:10px;padding:calc(8px + var(--top)) 12px 8px;font:700 13px/1.2 var(--f-d)}
 .lb-top .rb{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.15)}
 .lb-top span{color:#C9D2EE;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb-stage{flex:1;position:relative;overflow:hidden}
+.lb-stage{flex:1;position:relative;overflow:hidden;cursor:grab}
+.lb-zoom{position:absolute;z-index:3;right:max(14px,env(safe-area-inset-right,0px));top:calc(10px + var(--top));display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14)}
+.lb-zoom button{min-width:36px;height:32px;padding:0 10px;border-radius:999px;font:700 14px/1 var(--f-d);color:#fff}
+.lb-zoom button:hover{background:rgba(255,255,255,.12)}
 .lb-stage img{position:absolute;left:50%;top:0;width:min(100%,900px);height:auto;background:#ECE6D8;transform-origin:0 0;will-change:transform}
 .lb-foot{position:relative;z-index:2;display:flex;gap:8px;justify-content:center;padding:10px 12px calc(14px + var(--bot))}
 .lb-foot button{height:44px;padding:0 16px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);font:700 13px/1 var(--f-d);color:#fff}
@@ -889,6 +900,8 @@ function storyPageHTML(){
       <button data-act="share">${ICON.share}<span>Share</span></button>
     </div>
     <span class="edge-hint l">${ICON.prev}</span><span class="edge-hint r">${ICON.next}</span>
+    ${pv ? `<button class="tap-nav l" data-act="prev" aria-label="Previous story">${ICON.prev}</button>` : ""}
+    <button class="tap-nav r" data-act="next" aria-label="Next story">${ICON.next}</button>
   </div>`;
 }
 function journeyHTML(curSec){
@@ -937,6 +950,7 @@ function paintStory(dir){
     const y = sc.scrollTop;
     if (hero && !reduce && y < 500){ hero.style.transform = `translateY(${y * .4}px)`; hero.style.opacity = Math.max(.2, 1 - y / 450); }
     neu.classList.toggle("scrolled", !!h1 && y > h1.offsetTop + h1.offsetHeight - 70);
+    neu.classList.add("reading"); clearTimeout(neu._rt); neu._rt = setTimeout(() => neu.classList.remove("reading"), 700);
   }, {passive:true});
   neu.querySelector("[data-act=close]")?.focus({preventScroll:true});
 }
@@ -1001,32 +1015,62 @@ function lightbox(s, withStory){
   lb.innerHTML = `<div class="lb-top"><button class="rb" data-act="lb-x" aria-label="Close">${ICON.close}</button><span>${esc(s.outlet)}${s.page ? " · " + pages(s.page) : ""}</span></div>
     <div class="lb-stage" id="lb-stage">${img(media[0].src, 1080, "Clipping: " + s.title, 'loading="eager" id="lb-img"')}</div>
     <div class="lb-foot">${media.length > 1 ? media.map((m, k) => `<button data-act="lb-page" data-k="${k}" class="${k ? "" : "on"}">Page ${k + 1}</button>`).join("") : ""}${withStory ? `<button class="story-btn" data-act="lb-story" data-skey="${esc(s.key || s.id)}">Read the story</button>` : ""}</div>
-    <div class="lb-tip">Pinch or double-tap to zoom</div>`;
+    <div class="lb-zoom"><button data-act="lb-out" aria-label="Zoom out">−</button><button data-act="lb-fit" aria-label="Fit to screen">Fit</button><button data-act="lb-in" aria-label="Zoom in">+</button></div>
+    <div class="lb-tip">${matchMedia("(pointer:fine)").matches ? "Scroll or drag to move · double-click or + to zoom" : "Pinch or double-tap to zoom · pull down to close"}</div>`;
   document.body.appendChild(lb); pushOverlay("lb"); lock();
   lb.querySelector("button").focus();
   lb._media = media; setupZoom(lb);
 }
 function setupZoom(lb){
   const stage = lb.querySelector("#lb-stage"), im = lb.querySelector("#lb-img");
-  let sc = 1, tx = 0, ty = 0, base = null, lastTap = 0;
+  const desk = matchMedia("(pointer:fine)").matches;
+  let sc = 1, tx = 0, ty = 0, base = null, lastTap = 0, minS = 1, moved = false;
   const apply = (anim) => { im.style.transition = anim ? "transform .28s cubic-bezier(.22,.8,.25,1)" : "none"; im.style.left = "0"; im.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`; };
-  const fit = () => { const w = im.offsetWidth; tx = (stage.clientWidth - w) / 2; ty = Math.max(0, (stage.clientHeight - im.offsetHeight) / 2); sc = 1; apply(); };
-  const clamp = () => { const w = im.offsetWidth * sc, h = im.offsetHeight * sc, W = stage.clientWidth, H = stage.clientHeight; tx = w <= W ? (W - w) / 2 : Math.min(0, Math.max(W - w, tx)); ty = h <= H ? Math.max(0, (H - h) / 2) : Math.min(0, Math.max(H - h, ty)); };
-  im.addEventListener("load", () => { if (sc <= 1.01) fit(); }); if (im.complete) fit();
-  const zoomAt = (x, y, to) => { const r = stage.getBoundingClientRect(); const px = x - r.left, py = y - r.top; tx = px - (px - tx) * (to / sc); ty = py - (py - ty) * (to / sc); sc = to; clamp(); apply(true); };
+  const clamp = () => { const w = im.offsetWidth * sc, h = im.offsetHeight * sc, W = stage.clientWidth, H = stage.clientHeight; tx = w <= W ? (W - w) / 2 : Math.min(0, Math.max(W - w, tx)); ty = h <= H ? (H - h) / 2 : Math.min(0, Math.max(H - h, ty)); };
+  // Open showing the whole clipping: on a laptop fit it entirely; on a phone fit the width (scroll down to read).
+  const fit = () => {
+    if (!im.offsetHeight) return;
+    const H = stage.clientHeight - 8, W = stage.clientWidth;
+    minS = desk ? Math.min(1, H / im.offsetHeight, W / im.offsetWidth) : 1;
+    sc = minS; tx = 0; ty = 0; clamp(); apply();
+  };
+  lb._fit = fit;
+  im.addEventListener("load", () => { if (sc <= minS + .01) fit(); }); if (im.complete) fit();
+  addEventListener("resize", fit);
+  const zoomAt = (x, y, to) => { const r = stage.getBoundingClientRect(); const px = x - r.left, py = y - r.top; to = Math.max(minS, Math.min(5, to)); tx = px - (px - tx) * (to / sc); ty = py - (py - ty) * (to / sc); sc = to; clamp(); apply(true); };
+  const toggleZoom = (x, y) => zoomAt(x, y, sc > minS * 1.2 ? minS : Math.max(2.2, minS * 2.5));
   stage.addEventListener("touchstart", e => {
     if (e.touches.length === 2){ const [a, b] = e.touches; base = {d:Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), sc, tx, ty, cx:(a.clientX + b.clientX) / 2, cy:(a.clientY + b.clientY) / 2}; }
-    else { const t = e.touches[0]; base = {x:t.clientX, y:t.clientY, tx, ty, one:true}; const now = Date.now(); if (now - lastTap < 320){ zoomAt(t.clientX, t.clientY, sc > 1.2 ? 1 : 2.5); base = null; } lastTap = now; }
+    else { const t = e.touches[0]; base = {x:t.clientX, y:t.clientY, tx, ty, one:true, t0:Date.now()}; const now = Date.now(); if (now - lastTap < 320){ toggleZoom(t.clientX, t.clientY); base = null; } lastTap = now; }
   }, {passive:true});
   stage.addEventListener("touchmove", e => {
     if (!base) return; e.preventDefault();
     const r = stage.getBoundingClientRect();
-    if (e.touches.length === 2 && base.d){ const [a, b] = e.touches; const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); const to = Math.min(5, Math.max(1, base.sc * d / base.d)); const px = base.cx - r.left, py = base.cy - r.top; sc = to; tx = px - (px - base.tx) * (to / base.sc); ty = py - (py - base.ty) * (to / base.sc); apply(); }
+    if (e.touches.length === 2 && base.d){ const [a, b] = e.touches; const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); const to = Math.min(5, Math.max(minS, base.sc * d / base.d)); const px = base.cx - r.left, py = base.cy - r.top; sc = to; tx = px - (px - base.tx) * (to / base.sc); ty = py - (py - base.ty) * (to / base.sc); apply(); }
     else if (base.one){ const t = e.touches[0]; tx = base.tx + t.clientX - base.x; ty = base.ty + t.clientY - base.y; apply(); }
   }, {passive:false});
-  stage.addEventListener("touchend", e => { if (!e.touches.length){ base = null; if (sc < 1.05) fit(); else { clamp(); apply(true); } } });
-  stage.addEventListener("dblclick", e => Date.now() - lastTap < 800 ? null : zoomAt(e.clientX, e.clientY, sc > 1.2 ? 1 : 2.5));
-  stage.addEventListener("wheel", e => { e.preventDefault(); zoomAt(e.clientX, e.clientY, Math.min(5, Math.max(1, sc * (e.deltaY < 0 ? 1.15 : .87)))); }, {passive:false});
+  stage.addEventListener("touchend", e => {
+    if (e.touches.length) return;
+    // Pull the clipping down from its top (not zoomed) to close the viewer, like a photo app.
+    if (base?.one && sc <= minS + .01 && ty - base.ty > 120 && base.ty >= -2){ base = null; return closeLightbox(); }
+    base = null; if (sc < minS + .02) { sc = minS; } clamp(); apply(true);
+  });
+  // Mouse: drag to move, wheel to scroll, Ctrl/⌘ + wheel or double-click to zoom.
+  stage.addEventListener("dblclick", e => { if (Date.now() - lastTap > 800) toggleZoom(e.clientX, e.clientY); });
+  stage.addEventListener("wheel", e => {
+    e.preventDefault();
+    if (e.ctrlKey || e.metaKey) return zoomAt(e.clientX, e.clientY, sc * (e.deltaY < 0 ? 1.15 : .87));
+    tx -= e.deltaX; ty -= e.deltaY; clamp(); apply();
+  }, {passive:false});
+  stage.addEventListener("mousedown", e => {
+    if (e.button !== 0) return; e.preventDefault(); moved = false;
+    const sx = e.clientX, sy = e.clientY, bx = tx, by = ty; stage.style.cursor = "grabbing";
+    const mv = m => { if (Math.abs(m.clientX - sx) + Math.abs(m.clientY - sy) > 4) moved = true; tx = bx + m.clientX - sx; ty = by + m.clientY - sy; clamp(); apply(); };
+    const up = () => { stage.style.cursor = ""; removeEventListener("mousemove", mv); removeEventListener("mouseup", up); };
+    addEventListener("mousemove", mv); addEventListener("mouseup", up);
+  });
+  lb._zoomBy = f => { const r = stage.getBoundingClientRect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, sc * f); };
+  lb._reset = () => { sc = minS; clamp(); apply(true); fit(); };
 }
 function closeLightbox(){ if (history.state?.lb) history.back(); else { $(".lightbox")?.remove(); if (!$(".story")) unlock(); } }
 
@@ -1234,8 +1278,11 @@ document.addEventListener("click", async e => {
     }
     case "clip": return lightbox(ordered(st.story.sec)[st.story.i], false);
     case "lb-x": return closeLightbox();
+    case "lb-in": return t.closest(".lightbox")._zoomBy(1.4);
+    case "lb-out": return t.closest(".lightbox")._zoomBy(1 / 1.4);
+    case "lb-fit": return t.closest(".lightbox")._reset();
     case "lb-story": { const s = findStory(t.dataset.skey); closeLightbox(); if (s) setTimeout(() => openStory(s.section, ordered(s.section).indexOf(s)), 120); return; }
-    case "lb-page": { const lb = t.closest(".lightbox"), k = +t.dataset.k, im = lb.querySelector("#lb-img"); im.src = imgUrl(lb._media[k].src, 1080); im.dataset.orig = lb._media[k].src; lb.querySelectorAll("[data-act=lb-page]").forEach((b, j) => b.classList.toggle("on", j === k)); return; }
+    case "lb-page": { const lb = t.closest(".lightbox"), k = +t.dataset.k, im = lb.querySelector("#lb-img"); im.src = imgUrl(lb._media[k].src, 1080); im.dataset.orig = lb._media[k].src; im.addEventListener("load", () => lb._reset(), {once:true}); lb.querySelectorAll("[data-act=lb-page]").forEach((b, j) => b.classList.toggle("on", j === k)); return; }
     case "sheet-x": return closeSheetUser();
     case "m-prev": case "m-next": { const r = calMonth || dObj(st.date); calMonth = new Date(r.getFullYear(), r.getMonth() + (a === "m-next" ? 1 : -1), 1); $("#layer .sheet").innerHTML = editionsSheet(); return; }
     case "notify": closeSheetUser(); return enablePush();
