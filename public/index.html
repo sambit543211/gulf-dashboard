@@ -629,11 +629,22 @@ const SIZES = [1, 1.12, 1.25];
 const isLatest = () => st.preview || st.date === st.index[0]?.date;
 
 /* ---------- data ---------- */
-async function sb(path){
-  const r = await fetch(`${CFG.supabaseUrl}/rest/v1/${path}`, {headers:{apikey:CFG.supabaseKey, Authorization:`Bearer ${CFG.supabaseKey}`}, cache:"no-store"});
-  if (!r.ok) throw new Error("load " + r.status);
-  return r.json();
+// Data goes through the app's own address first (office networks often block the database host),
+// then straight to the database if the relay is unavailable.
+const SB_BASES = PROXY ? ["/sb/", `${CFG.supabaseUrl}/rest/v1/`] : [`${CFG.supabaseUrl}/rest/v1/`];
+async function sbFetch(path, init = {}){
+  let last;
+  for (const base of SB_BASES){
+    try {
+      const r = await fetch(base + path, {...init, cache:"no-store", headers:{apikey:CFG.supabaseKey, Authorization:`Bearer ${CFG.supabaseKey}`, ...(init.headers || {})}});
+      if (r.ok) return r;
+      last = new Error("load " + r.status);
+      if (r.status < 500 && r.status !== 404) break;
+    } catch (e){ last = e; }
+  }
+  throw last || new Error("load");
 }
+async function sb(path){ return (await sbFetch(path)).json(); }
 const loadIndex = async () => { st.index = await sb("edition_index?select=*&order=date.desc"); };
 async function loadEdition(date){
   const rows = await sb(`editions?date=eq.${date}&select=date,version,published_at,data`);
@@ -1135,8 +1146,7 @@ function notifySheet(){
 const b64 = s => { const p = "=".repeat((4 - s.length % 4) % 4), r = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...r].map(c => c.charCodeAt(0))); };
 async function saveSub(sub){
   const j = sub.toJSON();
-  const r = await fetch(`${CFG.supabaseUrl}/rest/v1/rpc/add_push_sub`, {method:"POST", headers:{apikey:CFG.supabaseKey, Authorization:`Bearer ${CFG.supabaseKey}`, "Content-Type":"application/json"}, body:JSON.stringify({p_endpoint:j.endpoint, p_p256dh:j.keys.p256dh, p_auth:j.keys.auth})});
-  if (!r.ok) throw new Error("save");
+  await sbFetch("rpc/add_push_sub", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({p_endpoint:j.endpoint, p_p256dh:j.keys.p256dh, p_auth:j.keys.auth})});
 }
 async function enablePush(){
   if (isIOS && !standalone) return installSheet();
@@ -1200,6 +1210,7 @@ document.addEventListener("click", async e => {
   }
   switch (a){
     case "theme": return toggleTheme(t);
+    case "retry": return retryLoad(false);
     case "editions": return openEditions();
     case "tour": closeLayer(); return setTimeout(startTour, 250);
     case "read-all":
@@ -1323,6 +1334,20 @@ function routeFromHash(){
   if (v !== "brief") history.pushState({v, c}, "", "#" + viewHash());
   render(0);
 }
+let retryTimer = null;
+function showLoadError(){
+  $("#page").innerHTML = `<div class="empty"><img src="/logo-lg.png" alt=""><h2>Couldn't load the brief</h2><p>We'll keep trying. If you're on an office network or VPN, try again in a moment or switch networks.</p><button class="btn" style="max-width:240px" data-act="retry">Try again</button></div>`;
+  clearTimeout(retryTimer); retryTimer = setTimeout(() => retryLoad(true), 8000);
+}
+async function retryLoad(auto){
+  clearTimeout(retryTimer);
+  if (!auto) $("#page").innerHTML = `<div style="display:grid;gap:12px;margin-top:20px" aria-label="Loading"><div class="sk" style="height:34px;width:60%"></div><div class="sk" style="height:250px;margin-top:14px"></div></div>`;
+  try {
+    await loadIndex();
+    if (!st.index.length) return;
+    await loadEdition(st.index[0].date); routeFromHash();
+  } catch (e){ showLoadError(); }
+}
 (async function boot(){
   themeIcon();
   const params = new URLSearchParams(location.search);
@@ -1346,7 +1371,7 @@ function routeFromHash(){
     if (stale){ await loadEdition(st.index[0].date); if (!$(".story")) cached?.ed ? render(0) : routeFromHash(); }
     else renderChrome();
   } catch (e){
-    if (!st.ed) $("#page").innerHTML = `<div class="empty"><img src="/logo-lg.png" alt=""><h2>Couldn't load the brief</h2><p>Check your connection, then pull down to try again.</p></div>`;
+    if (!st.ed) showLoadError();
   }
   maybeTour();
   initPush();

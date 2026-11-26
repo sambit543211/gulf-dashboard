@@ -178,7 +178,9 @@ async function ingest(file){
 function showErr(msg){ $("#working").hidden = true; drop.hidden = false; const e = $("#up-err"); e.textContent = msg; e.hidden = false; }
 async function loadCurrent(date){
   try {
-    const r = await fetch(`${CFG.supabaseUrl}/rest/v1/editions?date=eq.${date}&select=version,data`, {headers:{apikey:CFG.supabaseKey, Authorization:`Bearer ${CFG.supabaseKey}`}});
+    const h = {headers:{apikey:CFG.supabaseKey, Authorization:`Bearer ${CFG.supabaseKey}`}};
+    let r = await fetch(`/sb/editions?date=eq.${date}&select=version,data`, h).catch(() => null);
+    if (!r || !r.ok) r = await fetch(`${CFG.supabaseUrl}/rest/v1/editions?date=eq.${date}&select=version,data`, h);
     const rows = await r.json(); return rows[0] || null;
   } catch(e){ return null; }
 }

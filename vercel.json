@@ -1,26 +1,97 @@
 {
   "outputDirectory": "public",
   "functions": {
-    "api/ingest.py": { "maxDuration": 60 },
-    "api/publish.js": { "maxDuration": 60 }
+    "api/ingest.py": {
+      "maxDuration": 60
+    },
+    "api/publish.js": {
+      "maxDuration": 60
+    }
   },
   "images": {
-    "sizes": [96, 256, 640, 1080],
-    "formats": ["image/webp"],
+    "sizes": [
+      96,
+      256,
+      640,
+      1080
+    ],
+    "formats": [
+      "image/webp"
+    ],
     "minimumCacheTTL": 2592000,
     "remotePatterns": [
-      { "protocol": "https", "hostname": "adfactors-prod-radar-boundry-box.s3.ap-south-1.amazonaws.com" },
-      { "protocol": "https", "hostname": "**.amazonaws.com" },
-      { "protocol": "https", "hostname": "img-cdn.publive.online" },
-      { "protocol": "https", "hostname": "etimg.etb2bimg.com" },
-      { "protocol": "https", "hostname": "**.licdn.com" },
-      { "protocol": "https", "hostname": "**.cdninstagram.com" },
-      { "protocol": "https", "hostname": "**.fbcdn.net" }
+      {
+        "protocol": "https",
+        "hostname": "adfactors-prod-radar-boundry-box.s3.ap-south-1.amazonaws.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "**.amazonaws.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "img-cdn.publive.online"
+      },
+      {
+        "protocol": "https",
+        "hostname": "etimg.etb2bimg.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "**.licdn.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "**.cdninstagram.com"
+      },
+      {
+        "protocol": "https",
+        "hostname": "**.fbcdn.net"
+      }
     ]
   },
   "headers": [
-    { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }, { "key": "Service-Worker-Allowed", "value": "/" }] },
-    { "source": "/upload", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }, { "key": "Referrer-Policy", "value": "no-referrer" }] }
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/upload",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        }
+      ]
+    },
+    {
+      "source": "/sb/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
   ],
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/sb/:path*",
+      "destination": "https://swmadfisbealewuoedjm.supabase.co/rest/v1/:path*"
+    }
+  ]
 }
