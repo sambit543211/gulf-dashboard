@@ -633,7 +633,10 @@ const isNew = s => st.ed.version > 1 && s.firstVersion === st.ed.version && !isR
 const storiesIn = sec => st.ed.stories.filter(s => s.section === sec);
 const leadOf = sec => { const l = storiesIn(sec); const id = (st.ed.leads || {})[sec]; return l.find(s => s.key === id) || l.find(s => visual(s)) || l[0]; };
 const ordered = sec => { const l = storiesIn(sec), lead = leadOf(sec); return lead ? [lead, ...l.filter(s => s !== lead)] : []; };
-const secs = () => st.ed.sections.filter(n => storiesIn(n).length);
+// Fixed sector order (bottom bar and reading flow), whatever order the email used.
+const SECTOR_ORDER = ["Gulf", "Industry", "Auto & EV", "Infra", "Oil & Gas"];
+const rankOf = n => { const k = SECTOR_ORDER.indexOf(catInfo(n).short); return k < 0 ? SECTOR_ORDER.length : k; };
+const secs = () => st.ed.sections.filter(n => storiesIn(n).length).map((n, i) => [n, i]).sort((a, b) => rankOf(a[0]) - rankOf(b[0]) || a[1] - b[1]).map(x => x[0]);
 const slug = n => "c-" + catInfo(n).short.toLowerCase().replace(/[^a-z]+/g, "-").replace(/-+$/, "");
 const readMins = s => Math.max(1, Math.round(((s.fullText || s.summary || "").split(/\s+/).length) / 220));
 const SIZES = [1, 1.12, 1.25];
@@ -1414,9 +1417,11 @@ async function retryLoad(auto){
   try {
     await loadIndex();
     if (!st.index.length){ $("#page").innerHTML = `<div class="empty"><img src="/logo-lg.png" alt=""><h2>No edition yet</h2><p>The first brief appears here as soon as it's published.</p></div>`; $("#nav").innerHTML = ""; return; }
-    const stale = !(cached?.date && cached.date === st.index[0].date && cached.ed?.version === st.index[0].version);
-    if (stale){ await loadEdition(st.index[0].date); if (!$(".story")) cached?.ed ? render(0) : routeFromHash(); }
-    else renderChrome();
+    // Always re-check the edition (corrections can land without a new version); redraw only if it changed.
+    const before = cached?.ed && cached.date === st.index[0].date ? JSON.stringify(cached.ed) : null;
+    await loadEdition(st.index[0].date);
+    const changed = before !== JSON.stringify(st.ed);
+    if (!$(".story")) { if (!cached?.ed) routeFromHash(); else if (changed) render(0, true); else renderChrome(); }
   } catch (e){
     if (!st.ed) showLoadError();
   }

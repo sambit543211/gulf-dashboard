@@ -140,11 +140,57 @@ def _fetch(url, timeout=20):
         return r.read().decode("utf-8", "ignore")
 
 
+def _page_image(page):
+    """Lead image a page declares: og:image, twitter:image, image_src or JSON-LD (any attribute order or quotes)."""
+    for tag in re.findall(r"<meta\b[^>]*>", page, re.I):
+        if re.search(r"""(?:property|name)\s*=\s*["'](?:og:image(?::secure_url|:url)?|twitter:image(?::src)?)["']""", tag, re.I):
+            m = re.search(r"""content\s*=\s*["']([^"']+)["']""", tag, re.I)
+            if m and m.group(1).startswith("http"):
+                return html.unescape(m.group(1))
+    m = re.search(r"""<link\b[^>]*rel\s*=\s*["']image_src["'][^>]*href\s*=\s*["']([^"']+)""", page, re.I)
+    if m:
+        return html.unescape(m.group(1))
+    m = re.search(r'"image"\s*:\s*(?:\{[^}]*?"url"\s*:\s*)?\[?\s*"(https?://[^"]+)"', page)
+    return html.unescape(m.group(1)) if m else None
+
+
+def _is_photo(url):
+    """True if the URL serves a real photo (not an error or the ET 'no image' placeholder GIF)."""
+    try:
+        req = urllib.request.Request(url, headers=UA)
+        with urllib.request.urlopen(req, timeout=12) as r:
+            return (r.headers.get("Content-Type") or "").lower().startswith(("image/jpeg", "image/png", "image/webp", "image/avif"))
+    except Exception:
+        return False
+
+
+def _known_image(url):
+    """ET's image servers publish article photos by article id, so the photo can be found
+    even when the article page itself doesn't answer automated reads."""
+    host = urllib.parse.urlsplit(url).hostname or ""
+    m = re.search(r"/(\d{6,})(?:\.cms)?/?(?:[?#]|$)", url)
+    if not m:
+        return None
+    msid = m.group(1)
+    if host.endswith(".economictimes.indiatimes.com"):            # ETAuto, ETEnergyWorld and other ET B2B sites
+        cand = f"https://etimg.etb2bimg.com/thumb/msid-{msid},width-1200,resizemode-4/{msid}.jpg"
+    elif host in ("economictimes.indiatimes.com", "m.economictimes.com"):
+        cand = f"https://img.etimg.com/thumb/msid-{msid},width-1200,resizemode-4/{msid}.jpg"
+    else:
+        return None
+    return cand if _is_photo(cand) else None
+
+
 def _enrich_one(s):
     try:
         page = _fetch(s["url"])
     except Exception as e:  # a story without extras is still publishable
         s["fetchError"] = str(e)[:120]
+        page = None
+    if not page:
+        img = _known_image(s["url"])
+        if img:
+            s["image"] = {"src": img}
         return s
     if "mtrack.merryspiders.com" in s["url"]:
         m = re.search(r'TabPanel2_lblNews">(.*?)</span>', page, re.S)
@@ -157,10 +203,9 @@ def _enrich_one(s):
         s["clips"] = [{"src": src.replace(" ", "%20")}
                       for src in re.findall(r'TabPanel1_Image\d+"\s+src="([^"]+)"', page)]
     else:
-        m = re.search(r'<meta[^>]+(?:property|name)="og:image"[^>]+content="([^"]+)"', page) or \
-            re.search(r'<meta[^>]+content="([^"]+)"[^>]+property="og:image"', page)
-        if m:
-            s["image"] = {"src": html.unescape(m.group(1))}
+        src = _page_image(page) or _known_image(s["url"])
+        if src:
+            s["image"] = {"src": src}
     return s
 
 
