@@ -349,6 +349,10 @@ html.vt-theme::view-transition-new(root){animation:themeIn .6s var(--ease)}
 .st-hero .gen svg{width:72px;height:72px}
 .st-hero::after{content:"";position:absolute;left:0;right:0;top:0;height:120px;background:linear-gradient(rgba(0,0,0,.45),transparent);pointer-events:none}
 @keyframes kb{from{transform:scale(1.1)}}
+/* Clipping header: whole cut-out, scaled to the screen width, never cropped. Starts below the top controls. */
+.st-hero.paper{height:auto;min-height:0;max-height:none;padding:calc(var(--top) + 80px) 0 0}
+.st-hero.paper img{display:block;width:100%;height:auto;max-height:calc(78svh - var(--top));object-fit:contain;object-position:center top;animation:none}
+.st-hero.paper::after{height:calc(var(--top) + 80px)}
 .st-scroll{overflow-x:hidden}
 .st-body{position:relative;z-index:1;background:var(--bg);max-width:700px;margin:0 auto;padding-top:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .crux p,.full .in,.sc .cx,.ts-b h3,.row h3{overflow-wrap:anywhere;word-break:break-word}
